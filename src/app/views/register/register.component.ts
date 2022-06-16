@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'sf-root',
+  selector: 'sf-register',
   template: `
-    <router-outlet></router-outlet>
+    <p>
+      register works!
+    </p>
   `,
   styles: []
 })
-export class AppComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
   constructor() {
   }

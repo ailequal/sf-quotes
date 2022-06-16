@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'sf-root',
+  selector: 'sf-quotes',
   template: `
-    <router-outlet></router-outlet>
+    <p>
+      quotes works!
+    </p>
   `,
   styles: []
 })
-export class AppComponent implements OnInit {
+export class QuotesComponent implements OnInit {
 
   constructor() {
   }
