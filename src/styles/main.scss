@@ -1,10 +1,53 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Import custom palettes.
+@import "./abstracts/palettes";
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$sf-quotes-primary: mat.define-palette($sf-palette-primary);
+$sf-quotes-accent: mat.define-palette($sf-palette-accent, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$sf-quotes-warn: mat.define-palette($sf-palette-warning);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$sf-quotes-theme: mat.define-light-theme((
+  color: (
+    primary: $sf-quotes-primary,
+    accent: $sf-quotes-accent,
+    warn: $sf-quotes-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($sf-quotes-theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 /* Imports */
 // @link https://sass-guidelin.es/#architecture
-//@import "./abstracts/palettes";
+//@import "./abstracts/variables";
 
 /* Global style */
+html, body {
+  height: 100%;
+}
+
 body {
   min-width: 320px;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
