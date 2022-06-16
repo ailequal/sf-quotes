@@ -3,7 +3,11 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'sf-root',
   template: `
-    <router-outlet></router-outlet>
+    <sf-toolbar></sf-toolbar>
+
+    <sf-container>
+      <router-outlet></router-outlet>
+    </sf-container>
   `,
   styles: []
 })
