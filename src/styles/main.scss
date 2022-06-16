@@ -39,6 +39,9 @@ $sf-quotes-theme: mat.define-light-theme((
 
 /* Imports */
 // @link https://sass-guidelin.es/#architecture
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 //@import "./abstracts/variables";
 
 /* Global style */
