@@ -1,21 +1,24 @@
 import {Component, OnInit} from '@angular/core';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'sf-toolbar',
   template: `
     <mat-toolbar color="primary">
       <div class="flex items-center" sfContainer>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+
+        <button (click)="handleClickMenu($event)" mat-icon-button aria-label="The menu icon.">
           <mat-icon>menu</mat-icon>
         </button>
+
         <span>sf-quotes</span>
+
         <span class="flex-auto"></span>
-        <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+
+        <button (click)="handleClickFavorite($event)" mat-icon-button aria-label="The favorite icon.">
           <mat-icon>favorite</mat-icon>
         </button>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-          <mat-icon>share</mat-icon>
-        </button>
+
       </div>
     </mat-toolbar>
   `,
@@ -23,10 +26,26 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+  }
+
+  handleClickMenu($event: MouseEvent) {
+    // TODO: Implement a simple menu with the material Sidenav component.
+    //  I still don't know what I will show inside...
+    console.log($event)
+  }
+
+  handleClickFavorite($event: MouseEvent) {
+    console.log($event)
+
+    this._snackBar.open('Written with 💕 by ailequal.', '🍀', {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 5000
+    })
   }
 
 }
