@@ -5,9 +5,9 @@ import {Component, OnInit} from '@angular/core';
   template: `
     <sf-toolbar></sf-toolbar>
 
-    <sf-container>
+    <div sfContainer>
       <router-outlet></router-outlet>
-    </sf-container>
+    </div>
   `,
   styles: []
 })
