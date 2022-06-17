@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {snackBarConfiguration} from "./shared/configurations/snack-bar";
 
 @Component({
   selector: 'sf-root',
@@ -61,11 +62,7 @@ export class AppComponent implements OnInit {
   }
 
   handleClickFavorite($event: MouseEvent) {
-    this._snackBar.open('Written with 💕 by ailequal.', '🍀', {
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      duration: 5000
-    })
+    this._snackBar.open('Written with 💕 by ailequal.', '🍀', snackBarConfiguration)
   }
 
 }

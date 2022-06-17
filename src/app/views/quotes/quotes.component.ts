@@ -4,6 +4,10 @@ import {BehaviorSubject} from "rxjs";
 import {QuoteService} from "../../api/quote.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Clipboard} from "@angular/cdk/clipboard";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
+import {DialogConfirm} from "../../models/dialog";
+import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 
 @Component({
   selector: 'sf-quotes',
@@ -29,7 +33,8 @@ export class QuotesComponent implements OnInit {
   constructor(
     private _quoteService: QuoteService,
     private _clipboard: Clipboard,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public _dialog: MatDialog
   ) {
   }
 
@@ -42,11 +47,7 @@ export class QuotesComponent implements OnInit {
   handleClickCopy(quote: Quote) {
     this._clipboard.copy(`"${quote.content}" - ${quote.author}`)
 
-    this._snackBar.open('Quote copied to the clipboard.', '📋', {
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      duration: 3000
-    });
+    this._snackBar.open('Quote copied to the clipboard.', '📋', snackBarConfiguration);
   }
 
   handleClickEdit(editQuote: Quote) {
@@ -59,28 +60,36 @@ export class QuotesComponent implements OnInit {
         })
       )
 
-      this._snackBar.open('Quote edited.', '✍️', {
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-        duration: 3000
-      });
+      this._snackBar.open('Quote edited.', '✍️', snackBarConfiguration);
     })
   }
 
   handleClickDelete(deleteQuote: Quote) {
-    this._quoteService.deleteQuote(deleteQuote.id).subscribe(v => {
-      this.quotes$.next(
-        this.quotes$.value.filter(q => {
-          return q.id !== deleteQuote.id
-        })
-      )
+    const dialogRef = this._dialog.open<DialogConfirmComponent, DialogConfirm>(DialogConfirmComponent, {
+      data: {
+        title: 'Delete quote',
+        content: `Do you really want to delete this quote from ${deleteQuote.author}?`,
+        cancelLabel: 'Cancel',
+        confirmLabel: 'Save changes',
+      }
+    });
 
-      this._snackBar.open('Quote deleted.', '🧹', {
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-        duration: 3000
-      });
-    })
+    // This observable immediately completes, so there is no need to unsubscribe manually.
+    // @link https://stackoverflow.com/questions/58198544/angular-dialogref-unsubscribe-do-i-need-to-unsubscribe-from-afterclosed
+    dialogRef.afterClosed().subscribe(
+      response => {
+        if (!response) return;
+
+        this._quoteService.deleteQuote(deleteQuote.id).subscribe(v => {
+          this.quotes$.next(
+            this.quotes$.value.filter(q => {
+              return q.id !== deleteQuote.id
+            })
+          )
+
+          this._snackBar.open('Quote deleted.', '🧹', snackBarConfiguration);
+        })
+      })
   }
 
 }
