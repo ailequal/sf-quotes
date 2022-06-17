@@ -10,17 +10,29 @@ import {Component, OnInit} from '@angular/core';
           <div class="flex flex-col justify-between items-center h-full">
 
             <div class="w-full">
-              <mat-list-option class="my-4 text-center" *ngFor="let link of links" [value]="link">
+              <mat-list-option
+                class="my-4 text-center"
+                *ngFor="let link of links"
+                [value]="link"
+                routerLink="/"
+                (click)="drawer.toggle()"
+              >
                 {{link}}
               </mat-list-option>
             </div>
 
-            <mat-list-option class="my-4 text-center" [value]="'link'">
-              🔗 link
-            </mat-list-option>
+            <div class="w-full">
+              <mat-list-option
+                class="my-4 text-center"
+                [value]="'link'"
+                routerLink="/"
+                (click)="drawer.toggle()">
+                🔗 link
+              </mat-list-option>
+            </div>
+
           </div>
         </mat-selection-list>
-
       </mat-drawer>
 
       <div>
