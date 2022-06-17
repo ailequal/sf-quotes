@@ -11,9 +11,9 @@ import {DialogConfirm} from "../../models/dialog";
       {{data.content}}
     </div>
 
-    <div mat-dialog-actions>
+    <div mat-dialog-actions align="end">
       <button mat-button [mat-dialog-close]="false">{{data.cancelLabel}}</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{data.confirmLabel}}</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{data.confirmLabel}}</button>
     </div>
   `,
   styles: []
@@ -24,7 +24,6 @@ export class DialogConfirmComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
   }
 
 }

@@ -52,23 +52,18 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickNew($event: MouseEvent) {
-    const dialogRef = this._dialog.open<QuoteFormComponent, DialogConfirm>(QuoteFormComponent, {
-      // data: {
-      //   title: 'Delete quote',
-      //   content: `Do you really want to delete this quote from ${deleteQuote.author}?`,
-      //   cancelLabel: 'Cancel',
-      //   confirmLabel: 'Save changes',
-      // }
+    const dialogRef = this._dialog.open<QuoteFormComponent, { quote: Quote | null }>(QuoteFormComponent, {
+      data: {
+        quote: null
+      }
     });
 
-    // This observable immediately completes, so there is no need to unsubscribe manually.
-    // @link https://stackoverflow.com/questions/58198544/angular-dialogref-unsubscribe-do-i-need-to-unsubscribe-from-afterclosed
     dialogRef.afterClosed().subscribe(
       newQuote => {
         if (!newQuote) return;
 
-        this._quoteService.newQuote(newQuote).subscribe(v => {
-          this.quotes$.next([newQuote, ...this.quotes$.value])
+        this._quoteService.newQuote(newQuote).subscribe(newQuoteResponse => {
+          this.quotes$.next([newQuoteResponse, ...this.quotes$.value])
 
           this._snackBar.open('Quote created.', '🎉', snackBarConfiguration);
         })
@@ -82,31 +77,38 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickEdit(editQuote: Quote) {
-    // TODO: This code works, but we do not have the editQuote actually here yet.
+    const dialogRef = this._dialog.open<QuoteFormComponent, { quote: Quote | null }>(QuoteFormComponent, {
+      data: {
+        quote: editQuote
+      }
+    });
 
-    this._quoteService.editQuote(editQuote.id, editQuote).subscribe(editQuoteResponse => {
-      this.quotes$.next(
-        this.quotes$.value.map(q => {
-          return (q.id !== editQuoteResponse.id) ? q : editQuoteResponse
+    dialogRef.afterClosed().subscribe(
+      editedQuote => {
+        if (!editedQuote) return;
+
+        this._quoteService.editQuote(editQuote.id, editedQuote).subscribe(editQuoteResponse => {
+          this.quotes$.next(
+            this.quotes$.value.map(q => {
+              return (q.id !== editQuoteResponse.id) ? q : editQuoteResponse
+            })
+          )
+
+          this._snackBar.open('Quote edited.', '✍️', snackBarConfiguration);
         })
-      )
-
-      this._snackBar.open('Quote edited.', '✍️', snackBarConfiguration);
-    })
+      })
   }
 
   handleClickDelete(deleteQuote: Quote) {
     const dialogRef = this._dialog.open<DialogConfirmComponent, DialogConfirm>(DialogConfirmComponent, {
       data: {
         title: 'Delete quote',
-        content: `Do you really want to delete this quote from ${deleteQuote.author}?`,
+        content: `Do you really want to delete this quote written by ${deleteQuote.author}?`,
         cancelLabel: 'Cancel',
-        confirmLabel: 'Save changes',
+        confirmLabel: 'Delete',
       }
     });
 
-    // This observable immediately completes, so there is no need to unsubscribe manually.
-    // @link https://stackoverflow.com/questions/58198544/angular-dialogref-unsubscribe-do-i-need-to-unsubscribe-from-afterclosed
     dialogRef.afterClosed().subscribe(
       response => {
         if (!response) return;

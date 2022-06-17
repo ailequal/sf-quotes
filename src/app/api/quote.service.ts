@@ -14,11 +14,15 @@ export class QuoteService {
   constructor(private _http: HttpClient) {
   }
 
+  // TODO: Get should retrieve the data starting from the most recent one.
   getQuotes(): Observable<Quote[]> {
     return this._http.get<Quote[]>(`${environment.apiUrl}/quotes`)
   }
 
   newQuote(quote: Omit<Quote, 'id'>): Observable<Quote> {
+    // If we don't have an author set, we will always set "Anonymous".
+    quote = quote.author ? quote : {...quote, author: "Anonymous"}
+
     return this._http.post<Quote>(`${environment.apiUrl}/quotes`, quote);
   }
 
