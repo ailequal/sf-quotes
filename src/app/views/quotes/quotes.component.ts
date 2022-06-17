@@ -3,6 +3,7 @@ import {Quote} from "../../models/quote";
 import {BehaviorSubject} from "rxjs";
 import {QuoteService} from "../../api/quote.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Clipboard} from "@angular/cdk/clipboard";
 
 @Component({
   selector: 'sf-quotes',
@@ -27,6 +28,7 @@ export class QuotesComponent implements OnInit {
 
   constructor(
     private _quoteService: QuoteService,
+    private _clipboard: Clipboard,
     private _snackBar: MatSnackBar
   ) {
   }
@@ -38,7 +40,13 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickCopy(quote: Quote) {
-    console.log(quote)
+    this._clipboard.copy(`"${quote.content}" - ${quote.author}`)
+
+    this._snackBar.open('Quote copied to the clipboard.', '📋', {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000
+    });
   }
 
   handleClickEdit(quote: Quote) {
