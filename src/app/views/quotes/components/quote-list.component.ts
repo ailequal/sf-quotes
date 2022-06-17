@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Quote} from "../../models/quote";
+import {Quote} from "../../../models/quote";
 
 @Component({
   selector: 'sf-quote-list',
@@ -38,6 +38,8 @@ import {Quote} from "../../models/quote";
   styles: []
 })
 export class QuoteListComponent implements OnInit {
+
+  // TODO: Consider adding the material paginator for this component (it will better display lots of quotes).
 
   @Input() quote!: Quote;
 
