@@ -14,13 +14,19 @@ import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
   template: `
     <div sfContainerSmall>
 
-      <sf-quote-list
-        *ngFor="let quote of (quotes$ | async);"
-        [quote]="quote"
-        (onClickCopy)="handleClickCopy($event)"
-        (onClickEdit)="handleClickEdit($event)"
-        (onClickDelete)="handleClickDelete($event)"
-      ></sf-quote-list>
+      <sf-quote-header></sf-quote-header>
+
+      <ng-container *ngIf="quotes$ | async as quotes;">
+        <sf-quote-list
+          *ngFor="let quote of quotes;"
+          [quote]="quote"
+          (onClickCopy)="handleClickCopy($event)"
+          (onClickEdit)="handleClickEdit($event)"
+          (onClickDelete)="handleClickDelete($event)"
+        ></sf-quote-list>
+
+        <sf-quote-empty *ngIf="!quotes.length"></sf-quote-empty>
+      </ng-container>
 
     </div>
   `,
