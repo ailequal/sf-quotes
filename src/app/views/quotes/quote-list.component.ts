@@ -1,13 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Quote} from "../../models/quote";
 
 @Component({
   selector: 'sf-quote-list',
   template: `
     <mat-card class="mb-4">
-      <mat-card-content>{{content}}</mat-card-content>
+      <mat-card-content class="text-lg">{{quote.content}}</mat-card-content>
 
       <div class="flex justify-between items-center">
-        <mat-card-subtitle style="margin: 0;" class="text-left text-xl">{{author}}</mat-card-subtitle>
+        <mat-card-subtitle style="margin: 0;" class="text-left text-xl">{{quote.author}}</mat-card-subtitle>
 
         <div>
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="The more vert icon.">
@@ -15,17 +16,17 @@ import {Component, Input, OnInit} from '@angular/core';
           </button>
 
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button (click)="onClickCopy.emit(quote)" mat-menu-item>
               <mat-icon>content_copy</mat-icon>
               <span>Copy</span>
             </button>
 
-            <button mat-menu-item>
+            <button (click)="onClickEdit.emit(quote)" mat-menu-item>
               <mat-icon>edit_note</mat-icon>
               <span>Edit</span>
             </button>
 
-            <button mat-menu-item>
+            <button (click)="onClickDelete.emit(quote)" mat-menu-item>
               <mat-icon>delete</mat-icon>
               <span>Delete</span>
             </button>
@@ -38,9 +39,13 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class QuoteListComponent implements OnInit {
 
-  @Input() content: string | null = null;
+  @Input() quote!: Quote;
 
-  @Input() author: string | null = null;
+  @Output() onClickCopy: EventEmitter<Quote> = new EventEmitter<Quote>()
+
+  @Output() onClickEdit: EventEmitter<Quote> = new EventEmitter<Quote>()
+
+  @Output() onClickDelete: EventEmitter<Quote> = new EventEmitter<Quote>()
 
   constructor() {
   }

@@ -1,12 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {Quote} from "../../models/quote";
+import {BehaviorSubject} from "rxjs";
+import {QuoteService} from "../../api/quote.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'sf-quotes',
   template: `
     <div sfContainerSmall>
 
-      <sf-quote-list *ngFor="let quote of quotes;" [content]="quote.content" [author]="quote.author"></sf-quote-list>
+      <sf-quote-list
+        *ngFor="let quote of (quotes$ | async);"
+        [quote]="quote"
+        (onClickCopy)="handleClickCopy($event)"
+        (onClickEdit)="handleClickEdit($event)"
+        (onClickDelete)="handleClickDelete($event)"
+      ></sf-quote-list>
 
     </div>
   `,
@@ -14,28 +23,42 @@ import {Quote} from "../../models/quote";
 })
 export class QuotesComponent implements OnInit {
 
-  quotes: Quote[] = [
-    {
-      id: 48,
-      content: 'Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less.',
-      author: 'Marie Curie'
-    },
-    {
-      id: 49,
-      content: 'Every man dies. Not every man really lives.',
-      author: 'William Wallace'
-    },
-    {
-      id: 50,
-      content: 'I have found that if you love life, life will love you back.',
-      author: 'Arthur Rubinstein'
-    }
-  ]
+  quotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([])
 
-  constructor() {
+  constructor(
+    private _quoteService: QuoteService,
+    private _snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit(): void {
+    this._quoteService.getQuotes().subscribe(quotes => {
+      this.quotes$.next(quotes)
+    })
+  }
+
+  handleClickCopy(quote: Quote) {
+    console.log(quote)
+  }
+
+  handleClickEdit(quote: Quote) {
+    console.log(quote)
+  }
+
+  handleClickDelete(quote: Quote) {
+    this._quoteService.deleteQuote(quote.id).subscribe(v => {
+      this.quotes$.next(
+        this.quotes$.value.filter(q => {
+          return q.id !== quote.id
+        })
+      )
+
+      this._snackBar.open('Quote deleted.', '🧹', {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000
+      });
+    })
   }
 
 }
