@@ -18,6 +18,10 @@ export class QuoteService {
     return this._http.get<Quote[]>(`${environment.apiUrl}/quotes`)
   }
 
+  editQuote(quoteId: number, quote: Partial<Quote>): Observable<Quote> {
+    return this._http.put<Quote>(`${environment.apiUrl}/quotes/${quoteId}`, quote);
+  }
+
   deleteQuote(quoteId: number): Observable<any> {
     return this._http.delete<any>(`${environment.apiUrl}/quotes/${quoteId}`)
   }

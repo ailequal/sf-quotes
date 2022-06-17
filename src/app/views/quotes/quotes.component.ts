@@ -49,15 +49,29 @@ export class QuotesComponent implements OnInit {
     });
   }
 
-  handleClickEdit(quote: Quote) {
-    console.log(quote)
+  handleClickEdit(editQuote: Quote) {
+    // TODO: This code works, but we do not have the editQuote actually here yet.
+
+    this._quoteService.editQuote(editQuote.id, editQuote).subscribe(editQuoteResponse => {
+      this.quotes$.next(
+        this.quotes$.value.map(q => {
+          return (q.id !== editQuoteResponse.id) ? q : editQuoteResponse
+        })
+      )
+
+      this._snackBar.open('Quote edited.', '✍️', {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000
+      });
+    })
   }
 
-  handleClickDelete(quote: Quote) {
-    this._quoteService.deleteQuote(quote.id).subscribe(v => {
+  handleClickDelete(deleteQuote: Quote) {
+    this._quoteService.deleteQuote(deleteQuote.id).subscribe(v => {
       this.quotes$.next(
         this.quotes$.value.filter(q => {
-          return q.id !== quote.id
+          return q.id !== deleteQuote.id
         })
       )
 
