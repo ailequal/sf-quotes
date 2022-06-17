@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'sf-quote-header',
@@ -6,7 +6,7 @@ import {Component, OnInit} from '@angular/core';
     <div class="mb-6 text-center">
       <h2>Your saved quotes</h2>
 
-      <button mat-raised-button color="accent">
+      <button (click)="onClickNew.emit($event)" mat-raised-button color="accent">
         Feeling inspired? Add a new one!
       </button>
     </div>
@@ -14,6 +14,8 @@ import {Component, OnInit} from '@angular/core';
   styles: []
 })
 export class QuoteHeaderComponent implements OnInit {
+
+  @Output() onClickNew: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
   constructor() {
   }

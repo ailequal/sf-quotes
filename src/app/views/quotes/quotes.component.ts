@@ -8,13 +8,14 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
 import {DialogConfirm} from "../../models/dialog";
 import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
+import {QuoteFormComponent} from "./components/quote-form.component";
 
 @Component({
   selector: 'sf-quotes',
   template: `
     <div sfContainerSmall>
 
-      <sf-quote-header></sf-quote-header>
+      <sf-quote-header (onClickNew)="handleClickNew($event)"></sf-quote-header>
 
       <ng-container *ngIf="quotes$ | async as quotes;">
         <sf-quote-list
@@ -48,6 +49,30 @@ export class QuotesComponent implements OnInit {
     this._quoteService.getQuotes().subscribe(quotes => {
       this.quotes$.next(quotes)
     })
+  }
+
+  handleClickNew($event: MouseEvent) {
+    const dialogRef = this._dialog.open<QuoteFormComponent, DialogConfirm>(QuoteFormComponent, {
+      // data: {
+      //   title: 'Delete quote',
+      //   content: `Do you really want to delete this quote from ${deleteQuote.author}?`,
+      //   cancelLabel: 'Cancel',
+      //   confirmLabel: 'Save changes',
+      // }
+    });
+
+    // This observable immediately completes, so there is no need to unsubscribe manually.
+    // @link https://stackoverflow.com/questions/58198544/angular-dialogref-unsubscribe-do-i-need-to-unsubscribe-from-afterclosed
+    dialogRef.afterClosed().subscribe(
+      newQuote => {
+        if (!newQuote) return;
+
+        this._quoteService.newQuote(newQuote).subscribe(v => {
+          this.quotes$.next([newQuote, ...this.quotes$.value])
+
+          this._snackBar.open('Quote created.', '🎉', snackBarConfiguration);
+        })
+      })
   }
 
   handleClickCopy(quote: Quote) {
