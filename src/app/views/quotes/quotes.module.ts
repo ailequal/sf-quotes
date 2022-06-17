@@ -6,8 +6,6 @@ import {SharedModule} from "../../shared/shared.module";
 
 import {QuotesComponent} from './quotes.component';
 import {QuoteListComponent} from './components/quote-list.component';
-import {QuoteNewComponent} from './components/quote-new.component';
-import {QuoteEditComponent} from './components/quote-edit.component';
 import {QuoteEmptyComponent} from './components/quote-empty.component';
 import {QuoteHeaderComponent} from './components/quote-header.component';
 import {QuoteFormComponent} from './components/quote-form.component';
@@ -16,8 +14,6 @@ import {QuoteFormComponent} from './components/quote-form.component';
   declarations: [
     QuotesComponent,
     QuoteListComponent,
-    QuoteNewComponent,
-    QuoteEditComponent,
     QuoteEmptyComponent,
     QuoteHeaderComponent,
     QuoteFormComponent
