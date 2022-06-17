@@ -6,7 +6,21 @@ import {Component, OnInit} from '@angular/core';
     <mat-drawer-container class="h-screen" autosize>
 
       <mat-drawer #drawer class="w-[280px] p-8" mode="over">
-        <p>TODO: Write the real menu navigation.</p>
+        <mat-selection-list #shoes [multiple]="false" class="h-full">
+          <div class="flex flex-col justify-between items-center h-full">
+
+            <div class="w-full">
+              <mat-list-option class="my-4 text-center" *ngFor="let link of links" [value]="link">
+                {{link}}
+              </mat-list-option>
+            </div>
+
+            <mat-list-option class="my-4 text-center" [value]="'link'">
+              🔗 link
+            </mat-list-option>
+          </div>
+        </mat-selection-list>
+
       </mat-drawer>
 
       <div>
@@ -22,6 +36,10 @@ import {Component, OnInit} from '@angular/core';
   styles: []
 })
 export class AppComponent implements OnInit {
+
+  // TODO: Complete the menu with the correct links, depending on the SPA structure and functionality.
+
+  links: string[] = ['🏡 Home', '🌏 Discover', '➡️ Login', '📝 Register'];
 
   constructor() {
   }

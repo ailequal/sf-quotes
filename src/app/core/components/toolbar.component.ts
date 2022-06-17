@@ -26,6 +26,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class ToolbarComponent implements OnInit {
 
+  // TODO: Move the favorite part into the menu and replace it with a modal window with the main instructions of the SPA.
+
   @Output() onClickMenu: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
   constructor(private _snackBar: MatSnackBar) {
