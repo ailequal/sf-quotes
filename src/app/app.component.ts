@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'sf-root',
@@ -36,7 +37,7 @@ import {Component, OnInit} from '@angular/core';
       </mat-drawer>
 
       <div>
-        <sf-toolbar (onClickMenu)="drawer.toggle()"></sf-toolbar>
+        <sf-toolbar (onClickMenu)="drawer.toggle()" (onClickFavorite)="handleClickFavorite($event)"></sf-toolbar>
 
         <div class="my-8" sfContainer>
           <router-outlet></router-outlet>
@@ -53,10 +54,18 @@ export class AppComponent implements OnInit {
 
   links: string[] = ['🏡 Home', '🌏 Discover', '➡️ Login', '📝 Register'];
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+  }
+
+  handleClickFavorite($event: MouseEvent) {
+    this._snackBar.open('Written with 💕 by ailequal.', '🍀', {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 5000
+    })
   }
 
 }

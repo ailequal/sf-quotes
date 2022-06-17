@@ -1,5 +1,4 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'sf-toolbar',
@@ -15,7 +14,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 
         <span class="flex-auto"></span>
 
-        <button (click)="handleClickFavorite($event)" mat-icon-button aria-label="The favorite icon.">
+        <button (click)="onClickFavorite.emit($event)" mat-icon-button aria-label="The favorite icon.">
           <mat-icon>favorite</mat-icon>
         </button>
 
@@ -30,18 +29,12 @@ export class ToolbarComponent implements OnInit {
 
   @Output() onClickMenu: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
-  constructor(private _snackBar: MatSnackBar) {
+  @Output() onClickFavorite: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
+
+  constructor() {
   }
 
   ngOnInit(): void {
-  }
-
-  handleClickFavorite($event: MouseEvent) {
-    this._snackBar.open('Written with 💕 by ailequal.', '🍀', {
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      duration: 5000
-    })
   }
 
 }
