@@ -34,6 +34,7 @@ import {Quote} from "../../../models/quote";
             placeholder="Anonymous"
             formControlName="author"
           >
+          <mat-icon matSuffix>face</mat-icon>
         </mat-form-field>
       </div>
 

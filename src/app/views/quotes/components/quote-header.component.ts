@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'sf-quote-header',
@@ -6,9 +7,28 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
     <div class="mb-6 text-center">
       <h2>Your saved quotes</h2>
 
-      <button (click)="onClickNew.emit($event)" mat-raised-button color="accent">
-        Feeling inspired? Add a new one!
-      </button>
+      <div class="lg:flex lg:justify-between lg:items-center lg:flex-row-reverse">
+        <form [formGroup]="searchForm" novalidate class="lg:w-2/5 mb-3 lg:mb-0">
+          <div mat-dialog-content>
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Search</mat-label>
+              <input
+                type="text"
+                matInput
+                placeholder="..."
+                formControlName="search"
+              >
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-hint>Search by quote or author.</mat-hint>
+            </mat-form-field>
+          </div>
+        </form>
+
+        <button (click)="onClickNew.emit($event)" mat-raised-button color="accent">
+          Feeling inspired? Add a new one!
+        </button>
+
+      </div>
     </div>
   `,
   styles: []
@@ -17,7 +37,15 @@ export class QuoteHeaderComponent implements OnInit {
 
   @Output() onClickNew: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
-  constructor() {
+  searchForm = this._fb.group({
+    search: ['']
+  });
+
+  get search() {
+    return this.searchForm.get('search')
+  }
+
+  constructor(private _fb: FormBuilder) {
   }
 
   ngOnInit(): void {
