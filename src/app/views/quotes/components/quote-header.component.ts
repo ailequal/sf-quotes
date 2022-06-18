@@ -8,8 +8,15 @@ import {FormBuilder, Validators} from "@angular/forms";
       <h2>Your saved quotes</h2>
 
       <div class="lg:flex lg:justify-between lg:items-center lg:flex-row-reverse">
-        <form [formGroup]="searchForm" novalidate class="lg:w-2/5 mb-3 lg:mb-0">
+
+        <form
+          [formGroup]="searchForm"
+          novalidate
+          class="lg:w-2/5 mb-3 lg:mb-0"
+          (keydown.enter)="$event.preventDefault()"
+        >
           <div mat-dialog-content>
+
             <mat-form-field class="w-full" appearance="outline">
               <mat-label>Search</mat-label>
               <input
@@ -18,9 +25,13 @@ import {FormBuilder, Validators} from "@angular/forms";
                 placeholder="..."
                 formControlName="search"
               >
-              <mat-icon matSuffix>search</mat-icon>
+              <mat-icon *ngIf="!search?.value" matSuffix>search</mat-icon>
+              <button *ngIf="search?.value" matSuffix mat-icon-button aria-label="Clear" (click)="search?.reset()">
+                <mat-icon>close</mat-icon>
+              </button>
               <mat-hint>Search by quote or author.</mat-hint>
             </mat-form-field>
+
           </div>
         </form>
 
