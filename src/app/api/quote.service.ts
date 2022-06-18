@@ -14,9 +14,13 @@ export class QuoteService {
   constructor(private _http: HttpClient) {
   }
 
-  // TODO: Get should retrieve the data starting from the most recent one.
   getQuotes(): Observable<Quote[]> {
-    return this._http.get<Quote[]>(`${environment.apiUrl}/quotes`)
+    return this._http.get<Quote[]>(`${environment.apiUrl}/quotes`, {
+      params: {
+        _sort: 'id',
+        _order: 'desc'
+      }
+    })
   }
 
   newQuote(quote: Omit<Quote, 'id'>): Observable<Quote> {
