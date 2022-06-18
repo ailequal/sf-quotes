@@ -71,7 +71,7 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickCopy(quote: Quote) {
-    this._clipboard.copy(`"${quote.content}" - ${quote.author}`)
+    this._clipboard.copy(`${quote.content}\n( ${quote.author} )`)
 
     this._snackBar.open('Quote copied to the clipboard.', '📋', snackBarConfiguration);
   }
