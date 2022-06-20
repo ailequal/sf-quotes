@@ -17,7 +17,7 @@ import {QuoteFormComponent} from "./components/quote-form.component";
 
       <sf-quote-header (onSearch)="handleOnSearch($event)" (onClickNew)="handleClickNew($event)"></sf-quote-header>
 
-      <ng-container *ngIf="quotes$ | async | filterQuotes: search as quotes;">
+      <ng-container *ngIf="quotes$ | async | quotesFilter: search as quotes;">
         <sf-quote-list
           *ngFor="let quote of quotes;"
           [quote]="quote"

@@ -1,10 +1,10 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Quote} from "../../models/quote";
+import {Quote} from "../../../models/quote";
 
 @Pipe({
-  name: 'filterQuotes'
+  name: 'quotesFilter'
 })
-export class FilterQuotesPipe implements PipeTransform {
+export class QuotesFilterPipe implements PipeTransform {
 
   transform(quotes: Quote[] | null, search: string): Quote[] {
     if (!quotes || !quotes.length)

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {QuotesRoutingModule} from './quotes-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../../shared/shared.module";
+import {PipesModule} from './pipes/pipes.module';
 
 import {QuotesComponent} from './quotes.component';
 import {QuoteListComponent} from './components/quote-list.component';
@@ -22,7 +23,8 @@ import {QuoteFormComponent} from './components/quote-form.component';
     CommonModule,
     QuotesRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    PipesModule
   ]
 })
 export class QuotesModule {
