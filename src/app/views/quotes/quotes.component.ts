@@ -15,9 +15,9 @@ import {QuoteFormComponent} from "./components/quote-form.component";
   template: `
     <div sfContainerSmall>
 
-      <sf-quote-header (onClickNew)="handleClickNew($event)"></sf-quote-header>
+      <sf-quote-header (onSearch)="handleOnSearch($event)" (onClickNew)="handleClickNew($event)"></sf-quote-header>
 
-      <ng-container *ngIf="quotes$ | async as quotes;">
+      <ng-container *ngIf="quotes$ | async | filterQuotes: search as quotes;">
         <sf-quote-list
           *ngFor="let quote of quotes;"
           [quote]="quote"
@@ -35,7 +35,9 @@ import {QuoteFormComponent} from "./components/quote-form.component";
 })
 export class QuotesComponent implements OnInit {
 
-  quotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([])
+  search: string = '';
+
+  quotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
 
   constructor(
     private _quoteService: QuoteService,
@@ -123,6 +125,10 @@ export class QuotesComponent implements OnInit {
           this._snackBar.open('Quote deleted.', '🧹', snackBarConfiguration);
         })
       })
+  }
+
+  handleOnSearch(search: string) {
+    this.search = search;
   }
 
 }
