@@ -4,3 +4,8 @@ export interface Quote {
   content: string;
   author: string;
 }
+
+export interface SuggestedQuote {
+  text: string,
+  author: string
+}

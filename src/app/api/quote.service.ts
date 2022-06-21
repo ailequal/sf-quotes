@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {Quote} from "../models/quote";
+import {Quote, SuggestedQuote} from "../models/quote";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ import {Quote} from "../models/quote";
 export class QuoteService {
 
   // TODO: Write the real service implementation with Firebase.
+
+  suggestedQuotesApiUrl: string = 'https://type.fit/api/quotes';
 
   constructor(private _http: HttpClient) {
   }
@@ -40,6 +42,35 @@ export class QuoteService {
 
   deleteQuote(quoteId: number): Observable<any> {
     return this._http.delete<any>(`${environment.apiUrl}/quotes/${quoteId}`)
+  }
+
+  getSuggestedQuotes(limit: number = 0): Observable<SuggestedQuote[]> {
+    if (0 === limit)
+      return this._http.get<SuggestedQuote[]>(this.suggestedQuotesApiUrl)
+
+    return this._http.get<SuggestedQuote[]>(this.suggestedQuotesApiUrl).pipe(
+      map(quotes => {
+        // @link https://bobbyhadz.com/blog/javascript-get-multiple-random-elements-from-array
+        const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+
+        return shuffled.slice(0, limit);
+      })
+    )
+  }
+
+  getSuggestedQuote(): Observable<SuggestedQuote> {
+    return this.getSuggestedQuotes().pipe(
+      map(suggestedQuotes => {
+        if (!suggestedQuotes.length) {
+          return {
+            text: 'When life gives you lemons, make lemonade.',
+            author: 'Anonymous'
+          }
+        }
+
+        return suggestedQuotes[Math.floor(Math.random() * suggestedQuotes.length)];
+      })
+    )
   }
 
 }
