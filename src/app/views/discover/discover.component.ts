@@ -14,7 +14,7 @@ import {DialogConfirm} from "../../models/dialog";
   template: `
     <div sfContainerSmall>
 
-      <sf-discover-header></sf-discover-header>
+      <sf-discover-header (onClickRefresh)="handleClickRefresh($event)"></sf-discover-header>
 
       <ng-container *ngIf="suggestedQuotes$ | async as quotes; else loading">
         <sf-discover-list
@@ -38,6 +38,8 @@ import {DialogConfirm} from "../../models/dialog";
 })
 export class DiscoverComponent implements OnInit {
 
+  // TODO: We could consider keeping the search feature even for the discover quotes (useful with lots of them displayed).
+
   // TODO: In this component we don't rely directly on the value of the subject, but is this way ok?
   //  @link https://stackoverflow.com/questions/62262008/rxjs-behaviorsubject-proper-use-of-value
 
@@ -52,9 +54,11 @@ export class DiscoverComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._quoteService.getSuggestedQuotes(6).pipe(delay(300)).subscribe(quotes => {
-      this.suggestedQuotes$.next(quotes);
-    })
+    this.refreshQuotes();
+  }
+
+  handleClickRefresh($event: MouseEvent) {
+    this.refreshQuotes();
   }
 
   handleClickCopy(quote: Omit<Quote, 'id'>) {
@@ -103,6 +107,12 @@ export class DiscoverComponent implements OnInit {
 
         this._snackBar.open('Suggested quoted discarded.', '💡', snackBarConfiguration);
       });
+  }
+
+  refreshQuotes() {
+    this._quoteService.getSuggestedQuotes(6).pipe(delay(300)).subscribe(quotes => {
+      this.suggestedQuotes$.next(quotes);
+    })
   }
 
   replaceQuote(quoteIndex: number) {
