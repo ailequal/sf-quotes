@@ -22,6 +22,7 @@ import {DialogConfirm} from "../../models/dialog";
           [quote]="quote"
           (onClickCopy)="handleClickCopy($event)"
           (onClickAdd)="handleClickAdd($event, i)"
+          (onClickDiscard)="handleClickDiscard($event, i)"
         ></sf-discover-list>
 
         <sf-discover-empty *ngIf="!quotes.length"></sf-discover-empty>
@@ -77,20 +78,44 @@ export class DiscoverComponent implements OnInit {
         if (!response) return;
 
         this._quoteService.newQuote(addQuote).subscribe(newQuoteResponse => {
-          // TODO: This works, but it's ugly and nor reactive as it should.
-          this.suggestedQuotes$.pipe(take(1)).subscribe(quotes => {
-            this._quoteService.getSuggestedQuote().subscribe(newSuggestedQuote => {
-              const updatedSuggestedQuotes = [newSuggestedQuote, ...(quotes.filter((element, index) => {
-                return index !== addQuoteIndex;
-              }))];
-
-              this.suggestedQuotes$.next(updatedSuggestedQuotes);
-            });
-          });
+          this.replaceQuote(addQuoteIndex);
 
           this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
         })
       })
+  }
+
+  handleClickDiscard(discardQuote: Omit<Quote, "id">, discardQuoteIndex: number) {
+    const dialogRef = this._dialog.open<DialogConfirmComponent, DialogConfirm>(DialogConfirmComponent, {
+      data: {
+        title: 'Discard quote',
+        content: `Do you really want to discard this quote written by ${discardQuote.author}?`,
+        cancelLabel: 'Cancel',
+        confirmLabel: 'Discard',
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(
+      response => {
+        if (!response) return;
+
+        this.replaceQuote(discardQuoteIndex);
+
+        this._snackBar.open('Suggested quoted discarded.', '💡', snackBarConfiguration);
+      });
+  }
+
+  replaceQuote(quoteIndex: number) {
+    // TODO: This works, but it's ugly and nor reactive as it should be.
+    this.suggestedQuotes$.pipe(take(1)).subscribe(quotes => {
+      this._quoteService.getSuggestedQuote().subscribe(newSuggestedQuote => {
+        const updatedSuggestedQuotes = [newSuggestedQuote, ...(quotes.filter((element, index) => {
+          return index !== quoteIndex;
+        }))];
+
+        this.suggestedQuotes$.next(updatedSuggestedQuotes);
+      });
+    });
   }
 
 }

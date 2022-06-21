@@ -25,6 +25,11 @@ import {Quote} from "../../../models/quote";
               <mat-icon>add</mat-icon>
               <span>Add</span>
             </button>
+
+            <button (click)="onClickDiscard.emit(quote)" mat-menu-item>
+              <mat-icon>close</mat-icon>
+              <span>Discard</span>
+            </button>
           </mat-menu>
         </div>
       </div>
@@ -39,6 +44,8 @@ export class DiscoverListComponent implements OnInit {
   @Output() onClickCopy: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
 
   @Output() onClickAdd: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
+
+  @Output() onClickDiscard: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
 
   constructor() {
   }
