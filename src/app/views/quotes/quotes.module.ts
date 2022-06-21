@@ -10,6 +10,7 @@ import {QuoteListComponent} from './components/quote-list.component';
 import {QuoteEmptyComponent} from './components/quote-empty.component';
 import {QuoteHeaderComponent} from './components/quote-header.component';
 import {QuoteFormComponent} from './components/quote-form.component';
+import {QuoteSearchStatusComponent} from './components/quote-search-status.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {QuoteFormComponent} from './components/quote-form.component';
     QuoteListComponent,
     QuoteEmptyComponent,
     QuoteHeaderComponent,
-    QuoteFormComponent
+    QuoteFormComponent,
+    QuoteSearchStatusComponent
   ],
   imports: [
     CommonModule,

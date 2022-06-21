@@ -25,7 +25,9 @@ import {quotesFilter} from "./utilities/quotes-filter";
 
       <sf-quote-header (onSearch)="handleOnSearch($event)" (onClickNew)="handleClickNew($event)"></sf-quote-header>
 
-      <ng-container *ngIf="filteredQuotes$ | async as quotes;">
+      <ng-container *ngIf="filteredQuotes$ | async as quotes; else loading">
+        <sf-quote-search-status [results]="quotes.length"></sf-quote-search-status>
+
         <sf-quote-list
           *ngFor="let quote of quotes;"
           [quote]="quote"
@@ -33,9 +35,13 @@ import {quotesFilter} from "./utilities/quotes-filter";
           (onClickEdit)="handleClickEdit($event)"
           (onClickDelete)="handleClickDelete($event)"
         ></sf-quote-list>
-
-        <sf-quote-empty *ngIf="!quotes.length"></sf-quote-empty>
       </ng-container>
+
+      <sf-quote-empty *ngIf="!(allQuotes$ | async)?.length"></sf-quote-empty>
+
+      <ng-template #loading>
+        <mat-progress-bar mode="query"></mat-progress-bar>
+      </ng-template>
 
     </div>
   `,
