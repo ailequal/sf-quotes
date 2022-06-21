@@ -36,9 +36,9 @@ import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
           (onClickEdit)="handleClickEdit($event)"
           (onClickDelete)="handleClickDelete($event)"
         ></sf-quote-list>
-      </ng-container>
 
-      <sf-quote-empty *ngIf="!(allQuotes$ | async)?.length"></sf-quote-empty>
+        <sf-quote-empty *ngIf="!(allQuotes$ | async)?.length"></sf-quote-empty>
+      </ng-container>
 
       <ng-template #loading>
         <mat-progress-bar mode="query"></mat-progress-bar>

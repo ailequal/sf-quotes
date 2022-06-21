@@ -1,23 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'sf-quote-empty',
+  selector: 'sf-discover-empty',
   template: `
     <mat-card class="mb-4">
       <mat-card-title class="text-center text-xl">
-        You don't have any quotes saved yet...
+        We cannot find any new quotes to suggest to you, sorry.
       </mat-card-title>
 
       <mat-card-actions class="text-center">
-        <button routerLink="/discover" mat-raised-button color="basic">
-          Need some ideas? I can help
+        <button routerLink="/" mat-raised-button color="basic">
+          Go back to your quotes
         </button>
       </mat-card-actions>
     </mat-card>
   `,
   styles: []
 })
-export class QuoteEmptyComponent implements OnInit {
+export class DiscoverEmptyComponent implements OnInit {
 
   constructor() {
   }
