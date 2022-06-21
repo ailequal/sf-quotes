@@ -3,15 +3,25 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'sf-page-not-found',
   template: `
-    <p>
-      page-not-found works!
-    </p>
+    <div sfContainerSmall>
+
+      <div class="mb-6 text-center">
+        <h2>HTTP 404: Page not found</h2>
+
+        <div class="lg:flex lg:justify-around lg:items-center">
+          <button routerLink="/" mat-raised-button color="accent">
+            🏡 Home
+          </button>
+        </div>
+      </div>
+
+    </div>
   `,
   styles: []
 })
 export class PageNotFoundComponent implements OnInit {
 
-  // TODO: Style this component (it has low priority).
+  // TODO: Add a static quote as a joke related to the 404.
 
   constructor() {
   }
