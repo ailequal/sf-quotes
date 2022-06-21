@@ -1,6 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Quote} from "../../models/quote";
-import {BehaviorSubject} from "rxjs";
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  startWith, switchMap
+} from "rxjs";
 import {QuoteService} from "../../api/quote.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Clipboard} from "@angular/cdk/clipboard";
@@ -9,6 +16,7 @@ import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.com
 import {DialogConfirm} from "../../models/dialog";
 import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 import {QuoteFormComponent} from "./components/quote-form.component";
+import {quotesFilter} from "./utilities/quotes-filter";
 
 @Component({
   selector: 'sf-quotes',
@@ -17,7 +25,7 @@ import {QuoteFormComponent} from "./components/quote-form.component";
 
       <sf-quote-header (onSearch)="handleOnSearch($event)" (onClickNew)="handleClickNew($event)"></sf-quote-header>
 
-      <ng-container *ngIf="quotes$ | async | quotesFilter: search as quotes;">
+      <ng-container *ngIf="filteredQuotes$ | async as quotes;">
         <sf-quote-list
           *ngFor="let quote of quotes;"
           [quote]="quote"
@@ -35,9 +43,11 @@ import {QuoteFormComponent} from "./components/quote-form.component";
 })
 export class QuotesComponent implements OnInit {
 
-  search: string = '';
+  allQuotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
 
-  quotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
+  search$: Observable<any> | null = null;
+
+  filteredQuotes$: Observable<Quote[]> | null = null;
 
   constructor(
     private _quoteService: QuoteService,
@@ -49,8 +59,28 @@ export class QuotesComponent implements OnInit {
 
   ngOnInit(): void {
     this._quoteService.getQuotes().subscribe(quotes => {
-      this.quotes$.next(quotes)
+      this.allQuotes$.next(quotes);
     })
+  }
+
+  handleOnSearch(search$: Observable<any>) {
+    this.search$ = search$;
+
+    this.filteredQuotes$ = this.search$.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(search => {
+        return this.allQuotes$.pipe(
+          map(quotes => {
+            if ('string' !== typeof search || !search.length)
+              return quotes;
+
+            return quotesFilter(quotes, search);
+          })
+        )
+      })
+    );
   }
 
   handleClickNew($event: MouseEvent) {
@@ -65,7 +95,7 @@ export class QuotesComponent implements OnInit {
         if (!newQuote) return;
 
         this._quoteService.newQuote(newQuote).subscribe(newQuoteResponse => {
-          this.quotes$.next([newQuoteResponse, ...this.quotes$.value])
+          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
 
           this._snackBar.open('Quote created.', '🎉', snackBarConfiguration);
         })
@@ -90,8 +120,8 @@ export class QuotesComponent implements OnInit {
         if (!editedQuote) return;
 
         this._quoteService.editQuote(editQuote.id, editedQuote).subscribe(editQuoteResponse => {
-          this.quotes$.next(
-            this.quotes$.value.map(q => {
+          this.allQuotes$.next(
+            this.allQuotes$.value.map(q => {
               return (q.id !== editQuoteResponse.id) ? q : editQuoteResponse
             })
           )
@@ -116,8 +146,8 @@ export class QuotesComponent implements OnInit {
         if (!response) return;
 
         this._quoteService.deleteQuote(deleteQuote.id).subscribe(v => {
-          this.quotes$.next(
-            this.quotes$.value.filter(q => {
+          this.allQuotes$.next(
+            this.allQuotes$.value.filter(q => {
               return q.id !== deleteQuote.id
             })
           )
@@ -125,10 +155,6 @@ export class QuotesComponent implements OnInit {
           this._snackBar.open('Quote deleted.', '🧹', snackBarConfiguration);
         })
       })
-  }
-
-  handleOnSearch(search: string) {
-    this.search = search;
   }
 
 }

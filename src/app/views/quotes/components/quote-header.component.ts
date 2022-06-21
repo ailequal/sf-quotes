@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {Subscription} from "rxjs";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'sf-quote-header',
@@ -45,20 +45,15 @@ import {Subscription} from "rxjs";
   `,
   styles: []
 })
-export class QuoteHeaderComponent implements OnInit, OnDestroy {
+export class QuoteHeaderComponent implements OnInit {
 
-  // TODO: Would it be better if I output the search observable instead of its emission?
-  //  We would have more control on the data flow, but it must be handled well on the parent component.
-
-  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>()
+  @Output() onSearch: EventEmitter<Observable<any>> = new EventEmitter<Observable<any>>()
 
   @Output() onClickNew: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
   searchForm = this._fb.group({
     search: ['']
   });
-
-  searchSub: Subscription | null = null;
 
   get search() {
     return this.searchForm.get('search')
@@ -71,15 +66,7 @@ export class QuoteHeaderComponent implements OnInit, OnDestroy {
     if (!this.search)
       return;
 
-    this.searchSub = this.search.valueChanges.subscribe(search => {
-      search = !search ? '' : String(search); // It always returns a string.
-
-      this.onSearch.emit(search)
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.searchSub?.unsubscribe()
+    this.onSearch.emit(this.search.valueChanges)
   }
 
 }
