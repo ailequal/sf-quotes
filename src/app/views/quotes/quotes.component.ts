@@ -50,6 +50,9 @@ import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
 })
 export class QuotesComponent implements OnInit {
 
+  // TODO: We should avoid accessing directly the value from a behavior subject whenever possible.
+  //  @link https://stackoverflow.com/questions/37089977/how-to-get-current-value-of-rxjs-subject-or-observable
+
   allQuotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
 
   search$: Observable<any> | null = null;
