@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {snackBarConfiguration} from "./shared/configurations/snack-bar";
+import {NavigationLink} from "./models/link";
 
 @Component({
   selector: 'sf-root',
@@ -15,21 +16,20 @@ import {snackBarConfiguration} from "./shared/configurations/snack-bar";
               <mat-list-option
                 class="my-4 text-center"
                 *ngFor="let link of links"
-                [value]="link"
-                routerLink="/"
+                [value]="link.value"
+                [routerLink]="link.routerLink"
                 (click)="drawer.toggle()"
               >
-                {{link}}
+                {{link.title}}
               </mat-list-option>
             </div>
 
             <div class="w-full">
               <mat-list-option
                 class="my-4 text-center"
-                [value]="'link'"
-                routerLink="/"
-                (click)="drawer.toggle()">
-                🔗 link
+                [value]="'ailequal'"
+                (click)="handleClickFavorite($event)">
+                🍀 ailequal
               </mat-list-option>
             </div>
 
@@ -51,9 +51,18 @@ import {snackBarConfiguration} from "./shared/configurations/snack-bar";
 })
 export class AppComponent implements OnInit {
 
-  // TODO: Complete the menu with the correct links, depending on the SPA structure and functionality.
-
-  links: string[] = ['🏡 Home', '🌏 Discover', '➡️ Login', '📝 Register'];
+  links: NavigationLink[] = [
+    {
+      title: '🏡 Home',
+      value: 'home',
+      routerLink: '/'
+    },
+    {
+      title: '🌏 Discover',
+      value: 'discover',
+      routerLink: '/discover'
+    }
+  ];
 
   constructor(private _snackBar: MatSnackBar) {
   }
