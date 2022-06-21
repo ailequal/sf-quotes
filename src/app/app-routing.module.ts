@@ -14,7 +14,13 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./views/quotes/quotes.module').then(m => m.QuotesModule)
+    loadChildren: () => import('./views/quotes/quotes.module').then(m => m.QuotesModule),
+    pathMatch: 'full'
+  },
+  {
+    path: 'discover',
+    loadChildren: () => import('./views/discover/discover.module').then(m => m.DiscoverModule),
+    pathMatch: 'full'
   },
   {
     path: 'page-not-found',
