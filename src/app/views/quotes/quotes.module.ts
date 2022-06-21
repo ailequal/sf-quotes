@@ -11,6 +11,7 @@ import {QuoteEmptyComponent} from './components/quote-empty.component';
 import {QuoteHeaderComponent} from './components/quote-header.component';
 import {QuoteFormComponent} from './components/quote-form.component';
 import {QuoteSearchStatusComponent} from './components/quote-search-status.component';
+import {QuoteSuggestedComponent} from './components/quote-suggested.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {QuoteSearchStatusComponent} from './components/quote-search-status.compo
     QuoteEmptyComponent,
     QuoteHeaderComponent,
     QuoteFormComponent,
-    QuoteSearchStatusComponent
+    QuoteSearchStatusComponent,
+    QuoteSuggestedComponent
   ],
   imports: [
     CommonModule,

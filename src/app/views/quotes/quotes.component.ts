@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Quote} from "../../models/quote";
 import {
   BehaviorSubject,
-  debounceTime,
+  debounceTime, delay,
   distinctUntilChanged,
   map,
   Observable,
-  startWith, switchMap
+  startWith, switchMap, take
 } from "rxjs";
 import {QuoteService} from "../../api/quote.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -17,6 +17,7 @@ import {DialogConfirm} from "../../models/dialog";
 import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 import {QuoteFormComponent} from "./components/quote-form.component";
 import {quotesFilter} from "./utilities/quotes-filter";
+import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
 
 @Component({
   selector: 'sf-quotes',
@@ -66,6 +67,22 @@ export class QuotesComponent implements OnInit {
   ngOnInit(): void {
     this._quoteService.getQuotes().subscribe(quotes => {
       this.allQuotes$.next(quotes);
+    })
+
+    // TODO: Is this the best way to output data from a snackbar??
+    //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
+    this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
+      this._snackBar.openFromComponent(QuoteSuggestedComponent, {
+        ...snackBarConfiguration,
+        duration: 0,
+        data: {quote: quote}
+      }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
+        this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
+          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
+
+          this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
+        })
+      })
     })
   }
 

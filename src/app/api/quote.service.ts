@@ -57,7 +57,7 @@ export class QuoteService {
       }),
       map(quotes => {
         return quotes.map(quote => {
-          return {content: quote.text, author: quote.author}
+          return {content: quote.text, author: quote.author ? quote.author : 'Anonymous'}
         })
       })
     )

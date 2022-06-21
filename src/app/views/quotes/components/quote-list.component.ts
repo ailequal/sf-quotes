@@ -8,7 +8,7 @@ import {Quote} from "../../../models/quote";
       <mat-card-content class="text-lg">{{quote.content}}</mat-card-content>
 
       <div class="flex justify-between items-center">
-        <mat-card-subtitle style="margin: 0;" class="text-left text-xl">{{quote.author}}</mat-card-subtitle>
+        <mat-card-subtitle style="margin: 0;" class="text-left text-xl">( {{quote.author}} )</mat-card-subtitle>
 
         <div>
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="The more vert icon.">
