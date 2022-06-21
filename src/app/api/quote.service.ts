@@ -44,26 +44,31 @@ export class QuoteService {
     return this._http.delete<any>(`${environment.apiUrl}/quotes/${quoteId}`)
   }
 
-  getSuggestedQuotes(limit: number = 0): Observable<SuggestedQuote[]> {
-    if (0 === limit)
-      return this._http.get<SuggestedQuote[]>(this.suggestedQuotesApiUrl)
-
+  getSuggestedQuotes(limit: number = 10): Observable<Omit<Quote, 'id'>[]> {
     return this._http.get<SuggestedQuote[]>(this.suggestedQuotesApiUrl).pipe(
       map(quotes => {
+        if (0 === limit)
+          return quotes;
+
         // @link https://bobbyhadz.com/blog/javascript-get-multiple-random-elements-from-array
         const shuffled = [...quotes].sort(() => 0.5 - Math.random());
 
         return shuffled.slice(0, limit);
+      }),
+      map(quotes => {
+        return quotes.map(quote => {
+          return {content: quote.text, author: quote.author}
+        })
       })
     )
   }
 
-  getSuggestedQuote(): Observable<SuggestedQuote> {
+  getSuggestedQuote(): Observable<Omit<Quote, 'id'>> {
     return this.getSuggestedQuotes().pipe(
       map(suggestedQuotes => {
         if (!suggestedQuotes.length) {
           return {
-            text: 'When life gives you lemons, make lemonade.',
+            content: 'When life gives you lemons, make lemonade.',
             author: 'Anonymous'
           }
         }
