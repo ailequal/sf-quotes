@@ -9,36 +9,15 @@ import {NavigationLink} from "./models/link";
     <mat-drawer-container class="h-screen" autosize>
 
       <mat-drawer #drawer class="w-[280px] p-8" mode="over">
-        <mat-selection-list #shoes [multiple]="false" class="h-full">
-          <div class="flex flex-col justify-between items-center h-full">
-
-            <div class="w-full">
-              <mat-list-option
-                class="my-4 text-center"
-                *ngFor="let link of links"
-                [value]="link.value"
-                [routerLink]="link.routerLink"
-                (click)="drawer.toggle()"
-              >
-                {{link.title}}
-              </mat-list-option>
-            </div>
-
-            <div class="w-full">
-              <mat-list-option
-                class="my-4 text-center"
-                [value]="'ailequal'"
-                (click)="handleClickFavorite($event)">
-                🍀 ailequal
-              </mat-list-option>
-            </div>
-
-          </div>
-        </mat-selection-list>
+        <sf-toolbar-list
+          [links]="links"
+          (onClickNavigation)="drawer.toggle()"
+          (onClickAuthor)="handleClickAuthor($event)"
+        ></sf-toolbar-list>
       </mat-drawer>
 
       <div>
-        <sf-toolbar (onClickMenu)="drawer.toggle()" (onClickFavorite)="handleClickFavorite($event)"></sf-toolbar>
+        <sf-toolbar (onClickMenu)="drawer.toggle()" (onClickFavorite)="handleClickAuthor($event)"></sf-toolbar>
 
         <div class="my-8" sfContainer>
           <router-outlet></router-outlet>
@@ -70,7 +49,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handleClickFavorite($event: MouseEvent) {
+  handleClickAuthor($event: MouseEvent) {
     this._snackBar.open('Written with 💕 by ailequal.', '🍀', snackBarConfiguration)
   }
 

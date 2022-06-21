@@ -72,6 +72,8 @@ export class QuotesComponent implements OnInit {
       this.allQuotes$.next(quotes);
     })
 
+    // TODO: The suggested quote from the snackbar will be printed every time that the user lands on this route.
+    //  Is it ok, or do we wanna ask for a new one every X amount of time??
     // TODO: Is this the best way to output data from a snackbar??
     //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
     this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
