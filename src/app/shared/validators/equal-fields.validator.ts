@@ -1,8 +1,6 @@
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Directive, Input} from "@angular/core";
 
-// TODO: Consider refactoring this validator.
-
 // Real validation check (the common part).
 const equalFieldsValidator = (control: AbstractControl, fields: [string, string]): ValidationErrors | null => {
   const fieldAlpha = control.get(fields[0]);

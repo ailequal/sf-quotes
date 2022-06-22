@@ -43,6 +43,7 @@ export class QuoteService {
         if (0 === limit)
           return quotes;
 
+        // Get only the limited requested amount starting from the array.
         // @link https://bobbyhadz.com/blog/javascript-get-multiple-random-elements-from-array
         const shuffled = [...quotes].sort(() => 0.5 - Math.random());
 
@@ -50,6 +51,7 @@ export class QuoteService {
       }),
       map(quotes => {
         return quotes.map(quote => {
+          // Since the api has the data formatted differently, we map each value correctly.
           return {content: quote.text, author: quote.author ? quote.author : 'Anonymous'}
         })
       })
@@ -66,6 +68,7 @@ export class QuoteService {
           }
         }
 
+        // Get a single random quote.
         return suggestedQuotes[Math.floor(Math.random() * suggestedQuotes.length)];
       })
     )
