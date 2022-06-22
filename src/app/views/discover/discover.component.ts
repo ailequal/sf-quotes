@@ -115,7 +115,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   replaceQuote(quoteIndex: number) {
-    // TODO: This works, but it's ugly and nor reactive as it should be.
+    // TODO: This works, but it's ugly and not reactive as it should be.
     this.suggestedQuotes$.pipe(take(1)).subscribe(quotes => {
       this._quoteService.getSuggestedQuote().subscribe(newSuggestedQuote => {
         const updatedSuggestedQuotes = [newSuggestedQuote, ...(quotes.filter((element, index) => {
