@@ -110,7 +110,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   refreshQuotes() {
-    this._quoteService.getSuggestedQuotes(6).pipe(delay(300)).subscribe(quotes => {
+    this._quoteService.getSuggestedQuotes(10).pipe(delay(300)).subscribe(quotes => {
       this.suggestedQuotes$.next(quotes);
     })
   }

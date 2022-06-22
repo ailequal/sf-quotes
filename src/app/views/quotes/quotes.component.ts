@@ -18,6 +18,7 @@ import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 import {QuoteFormComponent} from "./components/quote-form.component";
 import {quotesFilter} from "./utilities/quotes-filter";
 import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
+import {CookieService} from "../../api/cookie.service";
 
 @Component({
   selector: 'sf-quotes',
@@ -50,6 +51,8 @@ import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
 })
 export class QuotesComponent implements OnInit {
 
+  // TODO: Consider adding a quote item component (single view of a quote).
+
   // TODO: We should avoid accessing directly the value from a behavior subject whenever possible.
   //  @link https://stackoverflow.com/questions/37089977/how-to-get-current-value-of-rxjs-subject-or-observable
 
@@ -61,6 +64,7 @@ export class QuotesComponent implements OnInit {
 
   constructor(
     private _quoteService: QuoteService,
+    private _cookieService: CookieService,
     private _clipboard: Clipboard,
     private _snackBar: MatSnackBar,
     public _dialog: MatDialog
@@ -72,23 +76,7 @@ export class QuotesComponent implements OnInit {
       this.allQuotes$.next(quotes);
     })
 
-    // TODO: The suggested quote from the snackbar will be printed every time that the user lands on this route.
-    //  Is it ok, or do we wanna ask for a new one every X amount of time??
-    // TODO: Is this the best way to output data from a snackbar??
-    //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
-    this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
-      this._snackBar.openFromComponent(QuoteSuggestedComponent, {
-        ...snackBarConfiguration,
-        duration: 0,
-        data: {quote: quote}
-      }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
-        this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
-          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
-
-          this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
-        })
-      })
-    })
+    this.suggestQuote();
   }
 
   handleOnSearch(search$: Observable<any>) {
@@ -183,6 +171,30 @@ export class QuotesComponent implements OnInit {
           this._snackBar.open('Quote deleted.', '🧹', snackBarConfiguration);
         })
       })
+  }
+
+  suggestQuote() {
+    const suggestedQuoteCookie = this._cookieService.getCookie('suggestedQuote');
+    if (suggestedQuoteCookie.length)
+      return;
+
+    // TODO: Is this the best way to output data from a snackbar??
+    //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
+    this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
+      this._snackBar.openFromComponent(QuoteSuggestedComponent, {
+        ...snackBarConfiguration,
+        duration: 0,
+        data: {quote: quote}
+      }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
+        this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
+          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
+
+          this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
+        });
+      });
+
+      this._cookieService.newCookie({name: 'suggestedQuote', value: '1'}, 60);
+    });
   }
 
 }
