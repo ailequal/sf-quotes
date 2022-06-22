@@ -14,8 +14,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
         <span class="flex-auto"></span>
 
-        <button (click)="onClickFavorite.emit($event)" mat-icon-button aria-label="The favorite icon.">
-          <mat-icon>favorite</mat-icon>
+        <button (click)="onClickHelp.emit($event)" mat-icon-button aria-label="The help icon.">
+          <mat-icon>help</mat-icon>
         </button>
 
       </div>
@@ -25,11 +25,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  // TODO: Move the favorite part into the menu and replace it with a modal window with the main instructions of the SPA.
-
   @Output() onClickMenu: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
-  @Output() onClickFavorite: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
+  @Output() onClickHelp: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>()
 
   constructor() {
   }

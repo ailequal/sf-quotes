@@ -5,11 +5,13 @@ import {SharedModule} from "../shared/shared.module";
 
 import {ToolbarComponent} from './components/toolbar.component';
 import {ToolbarListComponent} from './components/toolbar-list.component';
+import {HelpDialogComponent} from './components/help-dialog.component';
 
 @NgModule({
   declarations: [
     ToolbarComponent,
-    ToolbarListComponent
+    ToolbarListComponent,
+    HelpDialogComponent
   ],
   exports: [
     ToolbarComponent,
