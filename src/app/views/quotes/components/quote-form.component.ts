@@ -1,6 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {Quote} from "../../../models/quote";
 
 @Component({
@@ -8,9 +7,9 @@ import {Quote} from "../../../models/quote";
   template: `
     <form [formGroup]="quoteForm" novalidate>
 
-      <h1 mat-dialog-title>New quote</h1>
+      <h1>New quote</h1>
 
-      <div mat-dialog-content>
+      <div>
         <mat-form-field class="w-full" appearance="standard">
           <mat-label>Quote</mat-label>
           <textarea
@@ -38,12 +37,18 @@ import {Quote} from "../../../models/quote";
         </mat-form-field>
       </div>
 
-      <div mat-dialog-actions align="end">
-        <button mat-button [mat-dialog-close]="false">Cancel</button>
+      <div class="text-right">
+        <button
+          mat-button
+          (click)="onClickCancel.emit(false)"
+        >
+          Cancel
+        </button>
+
         <button
           mat-raised-button
           color="primary"
-          [mat-dialog-close]="quoteForm.value"
+          (click)="handleSubmit($event)"
           [disabled]="!quoteForm.valid"
         >
           {{initialQuote ? 'Edit' : 'Add'}}
@@ -56,9 +61,11 @@ import {Quote} from "../../../models/quote";
 })
 export class QuoteFormComponent implements OnInit {
 
-  // TODO: Maybe this component should work as a standalone form, while the dialog part should be separated?
+  @Input() initialQuote: Quote | null = null;
 
-  initialQuote: Quote | null = this.data.quote
+  @Output() onClickCancel: EventEmitter<false> = new EventEmitter<false>();
+
+  @Output() onClickAddEdit: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>();
 
   quoteForm = this._fb.group({
     content: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
@@ -74,7 +81,6 @@ export class QuoteFormComponent implements OnInit {
   }
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { quote: Quote | null },
     private _fb: FormBuilder
   ) {
   }
@@ -85,6 +91,16 @@ export class QuoteFormComponent implements OnInit {
       content: this.initialQuote?.content,
       author: this.initialQuote?.author
     })
+  }
+
+  handleSubmit($event: MouseEvent) {
+    let quote: Omit<Quote, 'id'> = {content: this.content!.value, author: this.author!.value}
+
+    // If we don't have an author set, we will always set "Anonymous".
+    if (!quote.author)
+      quote = {...quote, author: 'Anonymous'};
+
+    this.onClickAddEdit.emit(quote)
   }
 
 }

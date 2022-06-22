@@ -4,11 +4,6 @@ import {Cookie} from "../models/cookie";
 @Injectable({
   providedIn: 'root'
 })
-/**
- * Custom class based from the link below for easily handling the browser's cookies.
- *
- * @link "https://readerstacks.com/how-to-set-and-get-cookies-in-angular"
- */
 export class CookieService {
 
   constructor() {

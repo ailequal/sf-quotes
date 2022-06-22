@@ -11,7 +11,7 @@ import {Subject} from "rxjs";
       <span class="block">( {{quote.author}} )</span>
     </div>
 
-    <div align="end">
+    <div class="text-right">
       <button (click)="handleClickCancel($event)" mat-button>Discard</button>
       <button (click)="handleClickAdd(quote)" mat-raised-button color="primary">Add</button>
     </div>

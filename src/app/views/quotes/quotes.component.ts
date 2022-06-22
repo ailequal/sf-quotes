@@ -15,7 +15,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
 import {DialogConfirm} from "../../models/dialog";
 import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
-import {QuoteFormComponent} from "./components/quote-form.component";
+import {QuoteFormDialogComponent} from "./components/quote-form-dialog.component";
 import {quotesFilter} from "./utilities/quotes-filter";
 import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
 import {CookieService} from "../../api/cookie.service";
@@ -100,7 +100,7 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickNew($event: MouseEvent) {
-    const dialogRef = this._dialog.open<QuoteFormComponent, { quote: Quote | null }>(QuoteFormComponent, {
+    const dialogRef = this._dialog.open<QuoteFormDialogComponent, { quote: Quote | null }>(QuoteFormDialogComponent, {
       data: {
         quote: null
       }
@@ -125,7 +125,7 @@ export class QuotesComponent implements OnInit {
   }
 
   handleClickEdit(editQuote: Quote) {
-    const dialogRef = this._dialog.open<QuoteFormComponent, { quote: Quote | null }>(QuoteFormComponent, {
+    const dialogRef = this._dialog.open<QuoteFormDialogComponent, { quote: Quote | null }>(QuoteFormDialogComponent, {
       data: {
         quote: editQuote
       }

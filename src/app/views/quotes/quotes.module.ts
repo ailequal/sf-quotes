@@ -12,6 +12,7 @@ import {QuoteHeaderComponent} from './components/quote-header.component';
 import {QuoteFormComponent} from './components/quote-form.component';
 import {QuoteSearchStatusComponent} from './components/quote-search-status.component';
 import {QuoteSuggestedComponent} from './components/quote-suggested.component';
+import {QuoteFormDialogComponent} from './components/quote-form-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {QuoteSuggestedComponent} from './components/quote-suggested.component';
     QuoteHeaderComponent,
     QuoteFormComponent,
     QuoteSearchStatusComponent,
-    QuoteSuggestedComponent
+    QuoteSuggestedComponent,
+    QuoteFormDialogComponent
   ],
   imports: [
     CommonModule,

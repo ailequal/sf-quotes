@@ -26,13 +26,6 @@ export class QuoteService {
   }
 
   newQuote(quote: Omit<Quote, 'id'>): Observable<Quote> {
-    // TODO: Can we do this control inside the quote-form component??
-    //  We could use a custom pipe, but that's not really "right".
-    //  The real solution would be to make the form and modal two things separately.
-
-    // If we don't have an author set, we will always set "Anonymous".
-    quote = quote.author ? quote : {...quote, author: "Anonymous"}
-
     return this._http.post<Quote>(`${environment.apiUrl}/quotes`, quote);
   }
 

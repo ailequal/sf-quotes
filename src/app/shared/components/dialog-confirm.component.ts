@@ -11,7 +11,7 @@ import {DialogConfirm} from "../../models/dialog";
       {{data.content}}
     </div>
 
-    <div mat-dialog-actions align="end">
+    <div mat-dialog-actions class="justify-end">
       <button mat-button [mat-dialog-close]="false">{{data.cancelLabel}}</button>
       <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{data.confirmLabel}}</button>
     </div>
