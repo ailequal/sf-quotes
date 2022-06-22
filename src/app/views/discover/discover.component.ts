@@ -5,7 +5,6 @@ import {QuoteService} from "../../api/quote.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
-import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
 import {DialogConfirm} from "../../models/dialog";
 
@@ -64,7 +63,7 @@ export class DiscoverComponent implements OnInit {
   handleClickCopy(quote: Omit<Quote, 'id'>) {
     this._clipboard.copy(`${quote.content}\n( ${quote.author} )`)
 
-    this._snackBar.open('Quote copied to the clipboard.', '📋', snackBarConfiguration);
+    this._snackBar.open('Quote copied to the clipboard.', '📋');
   }
 
   handleClickAdd(addQuote: Omit<Quote, 'id'>, addQuoteIndex: number) {
@@ -84,7 +83,7 @@ export class DiscoverComponent implements OnInit {
         this._quoteService.newQuote(addQuote).subscribe(newQuoteResponse => {
           this.replaceQuote(addQuoteIndex);
 
-          this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
+          this._snackBar.open('Suggested quoted added.', '💡');
         })
       })
   }
@@ -105,7 +104,7 @@ export class DiscoverComponent implements OnInit {
 
         this.replaceQuote(discardQuoteIndex);
 
-        this._snackBar.open('Suggested quoted discarded.', '💡', snackBarConfiguration);
+        this._snackBar.open('Suggested quoted discarded.', '💡');
       });
   }
 

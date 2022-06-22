@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {snackBarConfiguration} from "./shared/configurations/snack-bar";
 import {NavigationLink} from "./models/link";
 
 @Component({
@@ -50,7 +49,8 @@ export class AppComponent implements OnInit {
   }
 
   handleClickAuthor($event: MouseEvent) {
-    this._snackBar.open('Written with 💕 by ailequal.', '🍀', snackBarConfiguration)
+    // TODO: When a snackbar is visualized (anyone), the body get the style "cursor: pointer" automatically applied. Why??!
+    this._snackBar.open('Written with 💕 by ailequal.', '🍀')
   }
 
 }

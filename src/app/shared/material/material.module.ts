@@ -11,7 +11,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
@@ -44,6 +44,16 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule
+  ],
+  providers: [
+    {
+      // @link https://v13.material.angular.io/components/snack-bar/overview#setting-the-global-configuration-defaults
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000
+      }
+    }
   ]
 })
 export class MaterialModule {

@@ -14,7 +14,6 @@ import {Clipboard} from "@angular/cdk/clipboard";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
 import {DialogConfirm} from "../../models/dialog";
-import {snackBarConfiguration} from "../../shared/configurations/snack-bar";
 import {QuoteFormDialogComponent} from "./components/quote-form-dialog.component";
 import {quotesFilter} from "./utilities/quotes-filter";
 import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
@@ -113,7 +112,7 @@ export class QuotesComponent implements OnInit {
         this._quoteService.newQuote(newQuote).subscribe(newQuoteResponse => {
           this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
 
-          this._snackBar.open('Quote created.', '🎉', snackBarConfiguration);
+          this._snackBar.open('Quote created.', '🎉');
         })
       })
   }
@@ -121,7 +120,7 @@ export class QuotesComponent implements OnInit {
   handleClickCopy(quote: Quote) {
     this._clipboard.copy(`${quote.content}\n( ${quote.author} )`)
 
-    this._snackBar.open('Quote copied to the clipboard.', '📋', snackBarConfiguration);
+    this._snackBar.open('Quote copied to the clipboard.', '📋');
   }
 
   handleClickEdit(editQuote: Quote) {
@@ -142,7 +141,7 @@ export class QuotesComponent implements OnInit {
             })
           )
 
-          this._snackBar.open('Quote edited.', '✍️', snackBarConfiguration);
+          this._snackBar.open('Quote edited.', '✍️');
         })
       })
   }
@@ -168,7 +167,7 @@ export class QuotesComponent implements OnInit {
             })
           )
 
-          this._snackBar.open('Quote deleted.', '🧹', snackBarConfiguration);
+          this._snackBar.open('Quote deleted.', '🧹');
         })
       })
   }
@@ -182,14 +181,13 @@ export class QuotesComponent implements OnInit {
     //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
     this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
       this._snackBar.openFromComponent(QuoteSuggestedComponent, {
-        ...snackBarConfiguration,
         duration: 0,
         data: {quote: quote}
       }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
         this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
           this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
 
-          this._snackBar.open('Suggested quoted added.', '💡', snackBarConfiguration);
+          this._snackBar.open('Suggested quoted added.', '💡');
         });
       });
 
