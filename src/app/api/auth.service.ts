@@ -65,6 +65,7 @@ export class AuthService {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this._fireAuth.signInWithPopup(provider);
 
+    // TODO: Where should the login redirect to??
     return await this.editUser(credential.user); // The result will always be undefined.
   }
 

@@ -15,6 +15,7 @@ import {NavigationLink} from "../../models/link";
             [routerLink]="link.routerLink"
             (click)="onClickNavigation.emit($event)"
           >
+            <mat-icon mat-list-icon>{{link.icon}}</mat-icon>
             {{link.title}}
           </mat-list-option>
         </div>
@@ -23,8 +24,19 @@ import {NavigationLink} from "../../models/link";
           <mat-list-option
             class="my-4 text-center"
             [value]="'ailequal'"
-            (click)="onClickAuthor.emit($event)">
-            🍀 ailequal
+            (click)="onClickAuthor.emit($event)"
+          >
+            <mat-icon mat-list-icon>🍀</mat-icon>
+            ailequal
+          </mat-list-option>
+
+          <mat-list-option
+            class="my-4 text-center"
+            [value]="'logout'"
+            (click)="onClickLogout.emit($event)"
+          >
+            <mat-icon mat-list-icon>logout</mat-icon>
+            Logout
           </mat-list-option>
         </div>
 
@@ -40,6 +52,8 @@ export class ToolbarListComponent implements OnInit {
   @Output() onClickNavigation: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @Output() onClickAuthor: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+
+  @Output() onClickLogout: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   constructor() {
   }

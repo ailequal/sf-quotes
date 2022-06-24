@@ -23,6 +23,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'user',
+    loadChildren: () => import('./views/user/user.module').then(m => m.UserModule)
+  },
+  {
     path: 'page-not-found',
     loadChildren: () => import('./views/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule),
     pathMatch: 'full'
