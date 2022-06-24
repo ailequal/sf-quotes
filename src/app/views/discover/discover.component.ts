@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {delay, ReplaySubject, Subject, take} from "rxjs";
+import {delay, ReplaySubject, take} from "rxjs";
 import {Quote} from "../../models/quote";
 import {QuoteService} from "../../api/quote.service";
 import {Clipboard} from "@angular/cdk/clipboard";

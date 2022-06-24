@@ -23,7 +23,10 @@ export class AuthGuard implements CanActivate {
         if (!isGuest)
           return;
 
-        alert('Access denied, you must login.');
+        // TODO: It should not be triggered when a user logout,
+        //  but with this implementation it will always start...
+        // alert('Access denied, you must login.');
+
         this._router.navigateByUrl('/login');
       }),
       map(isGuest => !isGuest) // The boolean must be inverted for the check.

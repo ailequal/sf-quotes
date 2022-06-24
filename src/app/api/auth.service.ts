@@ -64,8 +64,6 @@ export class AuthService {
     // TODO: Implement the standard login with the email.
     return new Promise<void>(() => {
     })
-
-    // return await this.editUser(credential.user); // The result will always be undefined.
   }
 
   /**
@@ -75,8 +73,10 @@ export class AuthService {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this._fireAuth.signInWithPopup(provider);
 
-    // TODO: Where should the login redirect to??
-    return await this.editUser(credential.user); // The result will always be undefined.
+    // Redirect and only later finish updating the user data (prevents ui bug).
+    await this._router.navigateByUrl('/');
+
+    return await this.editUser(credential.user);
   }
 
   /**
@@ -115,8 +115,7 @@ export class AuthService {
   async logout(): Promise<boolean> {
     await this._fireAuth.signOut();
 
-    // TODO: Decide how to handle the routing for the auth.
-    return await this._router.navigateByUrl('/');
+    return await this._router.navigateByUrl('/login');
   }
 
 }

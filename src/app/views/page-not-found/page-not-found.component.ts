@@ -10,7 +10,8 @@ import {Component, OnInit} from '@angular/core';
 
         <div class="lg:flex lg:justify-around lg:items-center">
           <button routerLink="/" mat-raised-button color="accent">
-            🏡 Home
+            <mat-icon>home</mat-icon>
+            Home
           </button>
         </div>
 
