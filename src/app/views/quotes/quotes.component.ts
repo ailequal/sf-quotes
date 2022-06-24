@@ -5,7 +5,7 @@ import {
   debounceTime, delay,
   distinctUntilChanged,
   map,
-  Observable,
+  Observable, pipe,
   startWith, switchMap, take
 } from "rxjs";
 import {QuoteService} from "../../api/quote.service";
@@ -18,6 +18,8 @@ import {QuoteFormDialogComponent} from "./components/quote-form-dialog.component
 import {quotesFilter} from "./utilities/quotes-filter";
 import {QuoteSuggestedComponent} from "./components/quote-suggested.component";
 import {CookieService} from "../../api/cookie.service";
+import {AuthService} from "../../api/auth.service";
+import {Guest, User} from "../../models/user";
 
 @Component({
   selector: 'sf-quotes',
@@ -61,12 +63,15 @@ export class QuotesComponent implements OnInit {
 
   filteredQuotes$: Observable<Quote[]> | null = null;
 
+  user$: Observable<User | Guest> = this._authService.user$;
+
   constructor(
-    private _quoteService: QuoteService,
-    private _cookieService: CookieService,
     private _clipboard: Clipboard,
     private _snackBar: MatSnackBar,
-    public _dialog: MatDialog
+    public _dialog: MatDialog,
+    private _authService: AuthService,
+    private _quoteService: QuoteService,
+    private _cookieService: CookieService
   ) {
   }
 
@@ -173,25 +178,30 @@ export class QuotesComponent implements OnInit {
   }
 
   suggestQuote() {
-    const suggestedQuoteCookie = this._cookieService.getCookie('suggestedQuote');
-    if (suggestedQuoteCookie.length)
-      return;
-
     // TODO: Is this the best way to output data from a snackbar??
     //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
-    this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
-      this._snackBar.openFromComponent(QuoteSuggestedComponent, {
-        duration: 0,
-        data: {quote: quote}
-      }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
-        this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
-          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
+    // Each user has its own unique cookie.
+    this.user$.pipe(take(1)).subscribe(user => {
+      const suggestedQuoteCookieName = `sf-quotes-suggestedQuote-${user.uid}`;
 
-          this._snackBar.open('Suggested quoted added.', '💡');
+      const suggestedQuoteCookie = this._cookieService.getCookie(suggestedQuoteCookieName);
+      if (suggestedQuoteCookie.length)
+        return;
+
+      this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
+        this._snackBar.openFromComponent(QuoteSuggestedComponent, {
+          duration: 0,
+          data: {quote: quote}
+        }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
+          this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
+            this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
+
+            this._snackBar.open('Suggested quoted added.', '💡');
+          });
         });
-      });
 
-      this._cookieService.newCookie({name: 'suggestedQuote', value: '1'}, 60);
+        this._cookieService.newCookie({name: suggestedQuoteCookieName, value: '1'}, 60);
+      })
     });
   }
 

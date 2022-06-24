@@ -6,8 +6,6 @@ import {Cookie} from "../models/cookie";
 })
 export class CookieService {
 
-  // TODO: The cookie should be unique for each user (use the uid).
-
   constructor() {
   }
 
