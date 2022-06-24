@@ -6,6 +6,7 @@ import {Quote} from "./models/quote";
 import {HelpDialogComponent} from "./core/components/help-dialog.component";
 import {AuthService} from "./api/auth.service";
 import {MatDrawer} from "@angular/material/sidenav";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'sf-root',
@@ -15,6 +16,7 @@ import {MatDrawer} from "@angular/material/sidenav";
       <mat-drawer #drawerRef class="w-[280px] p-8" mode="over">
         <sf-toolbar-list
           [links]="links"
+          [isGuest]="isGuest$ | async"
           (onClickNavigation)="drawerRef.toggle()"
           (onClickAuthor)="handleClickAuthor($event)"
           (onClickLogout)="handleClickLogout($event)"
@@ -52,6 +54,8 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  isGuest$: Observable<boolean> | null = null;
+
   constructor(
     private _snackBar: MatSnackBar,
     public _dialog: MatDialog,
@@ -60,6 +64,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isGuest$ = this._auth.isGuest$;
   }
 
   handleClickAuthor($event: MouseEvent) {

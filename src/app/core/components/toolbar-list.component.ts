@@ -31,6 +31,7 @@ import {NavigationLink} from "../../models/link";
           </mat-list-option>
 
           <mat-list-option
+            *ngIf="!isGuest"
             class="my-4 text-center"
             [value]="'logout'"
             (click)="onClickLogout.emit($event)"
@@ -48,6 +49,8 @@ import {NavigationLink} from "../../models/link";
 export class ToolbarListComponent implements OnInit {
 
   @Input() links: NavigationLink[] = [];
+
+  @Input() isGuest: boolean | null = null;
 
   @Output() onClickNavigation: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

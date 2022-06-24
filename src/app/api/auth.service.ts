@@ -13,6 +13,8 @@ export class AuthService {
 
   user$: Observable<User | Guest> | null = null;
 
+  isGuest$: Observable<boolean> | null = null;
+
   guest: Guest = {
     uid: '0000000000000000000000000000',
     displayName: 'Guest',
@@ -43,6 +45,14 @@ export class AuthService {
             return user ? user : this.guest;
           })
         );
+      })
+    );
+
+    // Set the isGuest$ observable for quickly detecting the user status.
+    this.isGuest$ = this.user$.pipe(
+      map(user => {
+        // The guest will always have this "fake" uid.
+        return '0000000000000000000000000000' === user.uid;
       })
     );
   }
