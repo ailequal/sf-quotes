@@ -20,7 +20,7 @@ import {AuthService} from "../../api/auth.service";
           </div>
 
           <div class="lg:flex lg:justify-around lg:items-center">
-            <button mat-raised-button color="accent" aria-label="The logout icon." (click)="auth.logout()">
+            <button mat-raised-button color="accent" aria-label="The logout icon." (click)="authService.logout()">
               <mat-icon>logout</mat-icon>
               Logout
             </button>
@@ -43,11 +43,11 @@ export class UserComponent implements OnInit {
 
   user$: Observable<User | Guest> | null = null;
 
-  constructor(public auth: AuthService) {
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.user$ = this.auth.user$;
+    this.user$ = this.authService.user$;
   }
 
 }

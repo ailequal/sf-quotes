@@ -20,7 +20,8 @@ import {AuthService} from "../../api/auth.service";
           </div>
 
           <div class="lg:flex lg:justify-around lg:items-center">
-            <button mat-raised-button color="accent" aria-label="The Google login icon." (click)="auth.googleLogin()">
+            <button mat-raised-button color="accent" aria-label="The Google login icon."
+                    (click)="authService.googleLogin()">
               <mat-icon>login</mat-icon>
               Login with Google
             </button>
@@ -41,11 +42,11 @@ export class LoginComponent implements OnInit {
 
   user$: Observable<User | Guest> | null = null;
 
-  constructor(public auth: AuthService) {
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.user$ = this.auth.user$;
+    this.user$ = this.authService.user$;
   }
 
 }

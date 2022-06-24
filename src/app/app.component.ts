@@ -59,12 +59,12 @@ export class AppComponent implements OnInit {
   constructor(
     private _snackBar: MatSnackBar,
     public _dialog: MatDialog,
-    private _auth: AuthService
+    private _authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
-    this.isGuest$ = this._auth.isGuest$;
+    this.isGuest$ = this._authService.isGuest$;
   }
 
   handleClickAuthor($event: MouseEvent) {
@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
   }
 
   handleClickLogout($event: MouseEvent) {
-    this._auth.logout();
+    this._authService.logout();
     this.drawer.toggle();
   }
 
