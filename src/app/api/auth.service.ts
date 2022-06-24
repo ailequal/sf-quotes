@@ -2,16 +2,22 @@ import firebase from "firebase/compat/app";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
 import {Injectable} from '@angular/core';
-import {Observable, of, switchMap} from "rxjs";
+import {delay, map, Observable, of, switchMap} from "rxjs";
 import {Router} from "@angular/router";
-import {User} from "../models/user";
+import {Guest, User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user$: Observable<User | undefined> | undefined = undefined;
+  user$: Observable<User | Guest> | null = null;
+
+  guest: Guest = {
+    uid: '0000000000000000000000000000',
+    displayName: 'Guest',
+    photoURL: 'https://via.placeholder.com/96/49566B/FFFFFF?text=Guest'
+  };
 
   /**
    * The constructor function.
@@ -27,10 +33,16 @@ export class AuthService {
   ) {
     // Remap the default Firebase user object with our custom data attached.
     this.user$ = this._fireAuth.authState.pipe(
+      delay(300),
       switchMap(user => {
-        return user ?
-          this._fireStore.doc<User>(`users/${user.uid}`).valueChanges() :
-          of(undefined);
+        if (!user)
+          return of(this.guest);
+
+        return this._fireStore.doc<User>(`users/${user.uid}`).valueChanges().pipe(
+          map(user => {
+            return user ? user : this.guest;
+          })
+        );
       })
     );
   }
@@ -77,7 +89,9 @@ export class AuthService {
       email: user.email ? user.email : '',
       displayName: user.displayName ? user.displayName : '',
       photoURL: user.photoURL ? user.photoURL : '',
-      lastLogin: Date.now() // The timestamp of the last login.
+      data: {
+        lastLogin: Date.now()
+      }
     }
 
     // Set the user data and return the result (promise with void).
