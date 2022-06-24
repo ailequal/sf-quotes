@@ -38,8 +38,6 @@ import {AuthService} from "../../api/auth.service";
 })
 export class LoginComponent implements OnInit {
 
-  // TODO: Access this route only when the user is not logged in.
-
   user$: Observable<User | Guest> | null = null;
 
   constructor(public authService: AuthService) {

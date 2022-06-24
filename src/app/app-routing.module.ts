@@ -4,11 +4,6 @@ import {AuthGuard} from "./core/guards/auth.guard";
 
 const routes: Routes = [
   {
-    path: 'register',
-    loadChildren: () => import('./views/register/register.module').then(m => m.RegisterModule),
-    pathMatch: 'full'
-  },
-  {
     path: 'login',
     loadChildren: () => import('./views/login/login.module').then(m => m.LoginModule),
     pathMatch: 'full'

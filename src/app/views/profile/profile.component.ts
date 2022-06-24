@@ -38,8 +38,6 @@ import {AuthService} from "../../api/auth.service";
 })
 export class ProfileComponent implements OnInit {
 
-  // TODO: Access this route only when the profile is logged in.
-
   // TODO: Add a simple interface for editing the profile data (displayName, photoURL...).
 
   user$: Observable<User | Guest> | null = null;
