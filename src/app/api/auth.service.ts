@@ -11,9 +11,9 @@ import {Guest, User} from "../models/user";
 })
 export class AuthService {
 
-  user$: Observable<User | Guest> | null = null;
+  user$!: Observable<User | Guest>;
 
-  isGuest$: Observable<boolean> | null = null;
+  isGuest$!: Observable<boolean>;
 
   guest: Guest = {
     uid: '0000000000000000000000000000',

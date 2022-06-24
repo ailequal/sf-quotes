@@ -18,7 +18,8 @@ import {Observable} from "rxjs";
           [links]="links"
           [isGuest]="isGuest$ | async"
           (onClickNavigation)="drawerRef.toggle()"
-          (onClickAuthor)="handleClickAuthor($event)"
+          (onClickCopyright)="handleClickCopyright($event)"
+          (onClickProfile)="drawerRef.toggle()"
           (onClickLogout)="handleClickLogout($event)"
         ></sf-toolbar-list>
       </mat-drawer>
@@ -42,13 +43,13 @@ export class AppComponent implements OnInit {
   links: NavigationLink[] = [
     {
       title: 'Home',
-      icon: '🏡',
+      icon: 'home',
       value: 'home',
       routerLink: '/'
     },
     {
       title: 'Discover',
-      icon: '🌏',
+      icon: 'travel_explore',
       value: 'discover',
       routerLink: '/discover'
     }
@@ -67,7 +68,8 @@ export class AppComponent implements OnInit {
     this.isGuest$ = this._authService.isGuest$;
   }
 
-  handleClickAuthor($event: MouseEvent) {
+  handleClickCopyright($event: MouseEvent) {
+    // TODO: Add link for the author.
     this._snackBar.open('Written with 💕 by ailequal.', '🍀');
     this.drawer.toggle();
   }

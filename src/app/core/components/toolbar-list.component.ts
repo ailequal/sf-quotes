@@ -23,21 +23,32 @@ import {NavigationLink} from "../../models/link";
         <div class="w-full">
           <mat-list-option
             class="my-4 text-center"
-            [value]="'ailequal'"
-            (click)="onClickAuthor.emit($event)"
+            *ngIf="!isGuest"
+            [value]="'profile'"
+            routerLink="/profile"
+            (click)="onClickProfile.emit($event)"
           >
-            <mat-icon mat-list-icon>🍀</mat-icon>
-            ailequal
+            <mat-icon mat-list-icon>account_circle</mat-icon>
+            Profile
           </mat-list-option>
 
           <mat-list-option
-            *ngIf="!isGuest"
             class="my-4 text-center"
+            *ngIf="!isGuest"
             [value]="'logout'"
             (click)="onClickLogout.emit($event)"
           >
             <mat-icon mat-list-icon>logout</mat-icon>
             Logout
+          </mat-list-option>
+
+          <mat-list-option
+            class="my-4 text-center"
+            [value]="'copyright'"
+            (click)="onClickCopyright.emit($event)"
+          >
+            <mat-icon mat-list-icon>copyright</mat-icon>
+            Copyright
           </mat-list-option>
         </div>
 
@@ -54,7 +65,9 @@ export class ToolbarListComponent implements OnInit {
 
   @Output() onClickNavigation: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
-  @Output() onClickAuthor: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output() onClickCopyright: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+
+  @Output() onClickProfile: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @Output() onClickLogout: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

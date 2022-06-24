@@ -4,7 +4,7 @@ import {Guest, User} from "../../models/user";
 import {AuthService} from "../../api/auth.service";
 
 @Component({
-  selector: 'sf-user',
+  selector: 'sf-profile',
   template: `
     <div sfContainerSmall>
 
@@ -35,11 +35,11 @@ import {AuthService} from "../../api/auth.service";
   `,
   styles: []
 })
-export class UserComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
-  // TODO: Access this route only when the user is logged in.
+  // TODO: Access this route only when the profile is logged in.
 
-  // TODO: Add a simple interface for editing the user data (displayName, photoURL...).
+  // TODO: Add a simple interface for editing the profile data (displayName, photoURL...).
 
   user$: Observable<User | Guest> | null = null;
 

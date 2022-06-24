@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from "./core/guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -15,16 +16,20 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./views/quotes/quotes.module').then(m => m.QuotesModule),
+    canActivate: [AuthGuard],
     pathMatch: 'full'
   },
   {
     path: 'discover',
     loadChildren: () => import('./views/discover/discover.module').then(m => m.DiscoverModule),
+    canActivate: [AuthGuard],
     pathMatch: 'full'
   },
   {
-    path: 'user',
-    loadChildren: () => import('./views/user/user.module').then(m => m.UserModule)
+    path: 'profile',
+    loadChildren: () => import('./views/profile/profile.module').then(m => m.ProfileModule),
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
   },
   {
     path: 'page-not-found',

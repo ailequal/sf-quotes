@@ -6,6 +6,8 @@ import {Cookie} from "../models/cookie";
 })
 export class CookieService {
 
+  // TODO: The cookie should be unique for each user (use the uid).
+
   constructor() {
   }
 
@@ -37,7 +39,7 @@ export class CookieService {
     return true;
   }
 
-  public deleteCookie(name: string):boolean {
+  public deleteCookie(name: string): boolean {
     return this.newCookie({name: name, value: ''}, -1);
   }
 
