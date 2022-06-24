@@ -7,6 +7,7 @@ import {HelpDialogComponent} from "./core/components/help-dialog.component";
 import {AuthService} from "./api/auth.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {Observable} from "rxjs";
+import {CopyrightComponent} from "./core/components/copyright.component";
 
 @Component({
   selector: 'sf-root',
@@ -69,8 +70,7 @@ export class AppComponent implements OnInit {
   }
 
   handleClickCopyright($event: MouseEvent) {
-    // TODO: Add link for the author.
-    this._snackBar.open('Written with 💕 by ailequal.', '🍀');
+    this._snackBar.openFromComponent(CopyrightComponent);
     this.drawer.toggle();
   }
 

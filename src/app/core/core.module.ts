@@ -6,12 +6,14 @@ import {SharedModule} from "../shared/shared.module";
 import {ToolbarComponent} from './components/toolbar.component';
 import {ToolbarListComponent} from './components/toolbar-list.component';
 import {HelpDialogComponent} from './components/help-dialog.component';
+import {CopyrightComponent} from './components/copyright.component';
 
 @NgModule({
   declarations: [
     ToolbarComponent,
     ToolbarListComponent,
-    HelpDialogComponent
+    HelpDialogComponent,
+    CopyrightComponent
   ],
   exports: [
     ToolbarComponent,
