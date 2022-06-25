@@ -20,7 +20,7 @@ import {AuthService} from "../../api/auth.service";
             <img class="m-auto" [src]="user.photoURL" alt="Guest profile picture.">
           </div>
 
-          <div class="lg:flex lg:justify-around lg:items-center">
+          <div class="flex justify-around items-center">
             <button mat-raised-button color="accent" aria-label="The logout icon." (click)="authService.logout()">
               <mat-icon>logout</mat-icon>
               Logout

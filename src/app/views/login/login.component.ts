@@ -19,7 +19,7 @@ import {AuthService} from "../../api/auth.service";
             <img class="m-auto" [src]="user.photoURL" alt="Guest profile picture.">
           </div>
 
-          <div class="lg:flex lg:justify-around lg:items-center">
+          <div class="flex justify-around items-center">
             <button mat-raised-button color="accent" aria-label="The Google login icon."
                     (click)="authService.googleLogin()">
               <mat-icon>login</mat-icon>
