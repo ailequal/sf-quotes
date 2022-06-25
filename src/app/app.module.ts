@@ -4,7 +4,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from "@angular/fire/compat";
-import {firebaseConfig} from "../../firebase.config";
+import {environment} from "../environments/environment";
 import {CoreModule} from './core/core.module';
 import {SharedModule} from "./shared/shared.module";
 
@@ -19,7 +19,7 @@ import {AppComponent} from './app.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     CoreModule,
     SharedModule
   ],

@@ -178,6 +178,9 @@ export class QuotesComponent implements OnInit {
   }
 
   suggestQuote() {
+    // TODO: The suggested snackbar quote could be problematic if the user before interacting with it does logout!!
+    //  We might need to store its reference into a global service and dismiss it everytime the logout is executed.
+
     // TODO: Is this the best way to output data from a snackbar??
     //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
     // Each user has its own unique cookie.
