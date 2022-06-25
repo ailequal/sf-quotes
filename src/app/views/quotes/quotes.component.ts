@@ -5,7 +5,7 @@ import {
   debounceTime, delay,
   distinctUntilChanged,
   map,
-  Observable, pipe,
+  Observable,
   startWith, switchMap, take
 } from "rxjs";
 import {QuoteService} from "../../api/quote.service";
