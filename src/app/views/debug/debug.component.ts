@@ -34,6 +34,8 @@ import {Component, OnInit} from '@angular/core';
 })
 export class DebugComponent implements OnInit {
 
+  // TODO: Remove or at least disable the entire module before publishing.
+
   constructor() {
   }
 

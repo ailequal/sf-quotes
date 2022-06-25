@@ -2,7 +2,7 @@ import firebase from "firebase/compat/app";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
 import {Injectable} from '@angular/core';
-import {delay, map, Observable, of, switchMap} from "rxjs";
+import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
 import {Router} from "@angular/router";
 import {Guest, User} from "../models/user";
 
@@ -45,6 +45,10 @@ export class AuthService {
             return user ? user : this.guest;
           })
         );
+      }),
+      catchError(error => {
+        console.log(error);
+        return this.user$; // TODO: Seems like it's working, but it could trigger an infinite loop maybe??
       })
     );
 
