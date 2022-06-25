@@ -1,29 +1,43 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AuthGuard} from "./core/guards/auth.guard";
+import {AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo} from "@angular/fire/compat/auth-guard";
 
+// @link https://github.com/angular/angularfire/blob/master/docs/auth/router-guards.md
 const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./views/login/login.module').then(m => m.LoginModule),
+    canActivate: [AngularFireAuthGuard],
+    data: {
+      authGuardPipe: () => redirectLoggedInTo('/')
+    },
     pathMatch: 'full'
   },
   {
     path: '',
     loadChildren: () => import('./views/quotes/quotes.module').then(m => m.QuotesModule),
-    canActivate: [AuthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: {
+      authGuardPipe: () => redirectUnauthorizedTo('/login')
+    },
     pathMatch: 'full'
   },
   {
     path: 'discover',
     loadChildren: () => import('./views/discover/discover.module').then(m => m.DiscoverModule),
-    canActivate: [AuthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: {
+      authGuardPipe: () => redirectUnauthorizedTo('/login')
+    },
     pathMatch: 'full'
   },
   {
     path: 'profile',
     loadChildren: () => import('./views/profile/profile.module').then(m => m.ProfileModule),
-    canActivate: [AuthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: {
+      authGuardPipe: () => redirectUnauthorizedTo('/login')
+    },
     pathMatch: 'full'
   },
   {

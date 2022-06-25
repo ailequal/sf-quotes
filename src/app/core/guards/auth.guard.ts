@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {map, Observable, of, take, tap} from 'rxjs';
+import {map, Observable, take, tap} from 'rxjs';
 import {AuthService} from "../../api/auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+
+  // This guard has been deprecated, since we can rely on the stock ones from the package "@angular/fire".
 
   constructor(
     private _router: Router,
