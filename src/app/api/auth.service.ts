@@ -65,7 +65,7 @@ export class AuthService {
    * Handle the login through email.
    */
   async emailLogin(): Promise<void> {
-    // TODO: Implement the standard login with the email.
+    // TODO: Implement the standard login with the email (we'll also need to create a register module/component).
     return new Promise<void>(() => {
     })
   }
