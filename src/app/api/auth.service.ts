@@ -11,6 +11,8 @@ import {Guest, User} from "../models/user";
 })
 export class AuthService {
 
+  // TODO: Implement OAuth 2.0!!
+
   user$!: Observable<User | Guest>;
 
   isGuest$!: Observable<boolean>;
