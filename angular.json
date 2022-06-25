@@ -127,6 +127,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "sf-quotes:build:production",
+            "firebaseProject": "sf-quotes",
+            "firebaseHostingSite": "sf-quotes"
+          }
         }
       }
     }

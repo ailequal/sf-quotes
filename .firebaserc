@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "sf-quotes"
+  },
+  "targets": {
+    "sf-quotes": {
+      "hosting": {
+        "sf-quotes": [
+          "sf-quotes"
+        ]
+      }
+    }
   }
 }
