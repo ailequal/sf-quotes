@@ -10,6 +10,8 @@ import {SharedModule} from "./shared/shared.module";
 
 import {AppComponent} from './app.component';
 
+// TODO: The main module is quite big (more than 1MB, this is probably due to the core and shared module)...
+
 @NgModule({
   declarations: [
     AppComponent
