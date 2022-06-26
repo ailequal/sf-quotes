@@ -79,12 +79,7 @@ export class AppComponent implements OnInit {
   }
 
   handleClickHelp($event: MouseEvent) {
-    this._dialog.open<HelpDialogComponent>(HelpDialogComponent, {
-      maxWidth: '200px',
-      maxHeight: '200px',
-      width: '50%',
-      height: '50%'
-    });
+    this._dialog.open<HelpDialogComponent>(HelpDialogComponent);
   }
 
 }
