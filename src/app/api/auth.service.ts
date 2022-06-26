@@ -4,7 +4,7 @@ import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/f
 import {Guest, User} from "../models/user";
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
-import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
+import {delay, map, Observable, of, switchMap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -47,10 +47,6 @@ export class AuthService {
             return user ? user : this.guest;
           })
         );
-      }),
-      catchError(error => {
-        console.log(error);
-        return this.user$; // TODO: Seems like it's working, but it could trigger an infinite loop maybe??
       })
     );
 

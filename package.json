@@ -9,8 +9,7 @@
     "deploy": "firebase deploy --only hosting",
     "build-deploy": "ng deploy",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "server": "json-server --watch server/db.json"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
