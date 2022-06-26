@@ -51,6 +51,8 @@ import {Guest, User} from "../../models/user";
 })
 export class QuotesComponent implements OnInit, OnDestroy {
 
+  // TODO: The component "sf-quote-empty" is shown for a brief moment even when it's not supposed to.
+
   // TODO: Consider adding a quote item component (single view of a quote).
 
   quotes$: Observable<Quote[]> | null = null;

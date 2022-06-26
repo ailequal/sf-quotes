@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from "@angular/material/snack-bar";
-import {Quote} from "../../../models/quote";
+import {SuggestedQuote} from "../../../models/quote";
 import {Subject} from "rxjs";
 
 @Component({
@@ -20,13 +20,13 @@ import {Subject} from "rxjs";
 })
 export class QuoteSuggestedComponent implements OnInit {
 
-  quote: Omit<Quote, 'userUid'> = this.data.quote
+  quote: SuggestedQuote = this.data.quote
 
-  onClickAdd$: Subject<Omit<Quote, 'userUid'>> = new Subject<Omit<Quote, "userUid">>();
+  onClickAdd$: Subject<SuggestedQuote> = new Subject<SuggestedQuote>();
 
   constructor(
     private _snackBarRef: MatSnackBarRef<QuoteSuggestedComponent>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: { quote: Omit<Quote, 'userUid'> }
+    @Inject(MAT_SNACK_BAR_DATA) public data: { quote: SuggestedQuote }
   ) {
   }
 
@@ -37,7 +37,7 @@ export class QuoteSuggestedComponent implements OnInit {
     this._snackBarRef.dismiss();
   }
 
-  handleClickAdd(quote: Omit<Quote, "userUid">) {
+  handleClickAdd(quote: SuggestedQuote) {
     this.onClickAdd$.next(quote);
     this._snackBarRef.dismiss();
   }
