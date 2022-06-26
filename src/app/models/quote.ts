@@ -5,11 +5,11 @@ export interface Quote {
   userUid: string;
   content: string;
   author: string;
-  timestamp:  firebase.firestore.Timestamp
+  timestamp: firebase.firestore.Timestamp
 }
 
 export interface SuggestedQuote {
-  uid: string;
+  uid?: string;
   content: string,
   author: string
 }

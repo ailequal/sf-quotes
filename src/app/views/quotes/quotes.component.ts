@@ -1,15 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Quote} from "../../models/quote";
 import {
-  BehaviorSubject,
   debounceTime, delay,
   distinctUntilChanged,
   map,
-  Observable,
+  Observable, of,
   startWith, switchMap, take
 } from "rxjs";
 import {QuoteService} from "../../api/quote.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSnackBar, MatSnackBarRef} from "@angular/material/snack-bar";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmComponent} from "../../shared/components/dialog-confirm.component";
@@ -39,7 +38,7 @@ import {Guest, User} from "../../models/user";
           (onClickDelete)="handleClickDelete($event)"
         ></sf-quote-list>
 
-        <sf-quote-empty *ngIf="!(allQuotes$ | async)?.length"></sf-quote-empty>
+        <sf-quote-empty *ngIf="!(quotes$ | async)?.length"></sf-quote-empty>
       </ng-container>
 
       <ng-template #loading>
@@ -50,20 +49,19 @@ import {Guest, User} from "../../models/user";
   `,
   styles: []
 })
-export class QuotesComponent implements OnInit {
+export class QuotesComponent implements OnInit, OnDestroy {
 
   // TODO: Consider adding a quote item component (single view of a quote).
 
-  // TODO: We should avoid accessing directly the value from a behavior subject whenever possible.
-  //  @link https://stackoverflow.com/questions/37089977/how-to-get-current-value-of-rxjs-subject-or-observable
-
-  allQuotes$: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
+  quotes$: Observable<Quote[]> | null = null;
 
   search$: Observable<any> | null = null;
 
   filteredQuotes$: Observable<Quote[]> | null = null;
 
   user$: Observable<User | Guest> = this._authService.user$;
+
+  quoteSuggestedSnackBarRef: MatSnackBarRef<QuoteSuggestedComponent> | null = null;
 
   constructor(
     private _clipboard: Clipboard,
@@ -76,9 +74,7 @@ export class QuotesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._quoteService.getQuotes().subscribe(quotes => {
-      this.allQuotes$.next(quotes);
-    })
+    this.quotes$ = this._quoteService.getQuotes();
 
     this.suggestQuote();
   }
@@ -86,19 +82,22 @@ export class QuotesComponent implements OnInit {
   handleOnSearch(search$: Observable<any>) {
     this.search$ = search$;
 
-    this.filteredQuotes$ = this.search$.pipe(
-      startWith(''),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(search => {
-        return this.allQuotes$.pipe(
-          map(quotes => {
+    this.filteredQuotes$ = this.quotes$!.pipe(
+      switchMap(quotes => {
+        if (!this.search$)
+          return of(quotes);
+
+        return this.search$.pipe(
+          startWith(''),
+          debounceTime(300),
+          distinctUntilChanged(),
+          map(search => {
             if ('string' !== typeof search || !search.length)
               return quotes;
 
             return quotesFilter(quotes, search);
           })
-        )
+        );
       })
     );
   }
@@ -115,8 +114,6 @@ export class QuotesComponent implements OnInit {
         if (!newQuote) return;
 
         this._quoteService.newQuote(newQuote).subscribe(newQuoteResponse => {
-          this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
-
           this._snackBar.open('Quote created.', '🎉');
         })
       })
@@ -139,13 +136,7 @@ export class QuotesComponent implements OnInit {
       editedQuote => {
         if (!editedQuote) return;
 
-        this._quoteService.editQuote(editQuote.id, editedQuote).subscribe(editQuoteResponse => {
-          this.allQuotes$.next(
-            this.allQuotes$.value.map(q => {
-              return (q.id !== editQuoteResponse.id) ? q : editQuoteResponse
-            })
-          )
-
+        this._quoteService.editQuote(editQuote.uid, editedQuote).subscribe(editQuoteResponse => {
           this._snackBar.open('Quote edited.', '✍️');
         })
       })
@@ -165,22 +156,13 @@ export class QuotesComponent implements OnInit {
       response => {
         if (!response) return;
 
-        this._quoteService.deleteQuote(deleteQuote.id).subscribe(v => {
-          this.allQuotes$.next(
-            this.allQuotes$.value.filter(q => {
-              return q.id !== deleteQuote.id
-            })
-          )
-
+        this._quoteService.deleteQuote(deleteQuote.uid).subscribe(v => {
           this._snackBar.open('Quote deleted.', '🧹');
         })
       })
   }
 
   suggestQuote() {
-    // TODO: The suggested snackbar quote could be problematic if the user before interacting with it does logout!!
-    //  We might need to store its reference into a global service and dismiss it everytime the logout is executed.
-
     // TODO: Is this the best way to output data from a snackbar??
     //  @link https://stackoverflow.com/questions/45647974/how-to-emit-event-when-using-snack-bar-entrycomponents-in-angular2
     // Each user has its own unique cookie.
@@ -192,13 +174,13 @@ export class QuotesComponent implements OnInit {
         return;
 
       this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
-        this._snackBar.openFromComponent(QuoteSuggestedComponent, {
+        this.quoteSuggestedSnackBarRef = this._snackBar.openFromComponent(QuoteSuggestedComponent, {
           duration: 0,
           data: {quote: quote}
-        }).instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
-          this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
-            this.allQuotes$.next([newQuoteResponse, ...this.allQuotes$.value])
+        });
 
+        this.quoteSuggestedSnackBarRef.instance.onClickAdd$.pipe(take(1)).subscribe(suggestedQuote => {
+          this._quoteService.newQuote(suggestedQuote).subscribe(newQuoteResponse => {
             this._snackBar.open('Suggested quoted added.', '💡');
           });
         });
@@ -206,6 +188,10 @@ export class QuotesComponent implements OnInit {
         this._cookieService.newCookie({name: suggestedQuoteCookieName, value: '1'}, 60);
       })
     });
+  }
+
+  ngOnDestroy(): void {
+    this.quoteSuggestedSnackBarRef?.dismiss();
   }
 
 }

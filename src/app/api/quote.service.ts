@@ -153,6 +153,42 @@ export class QuoteService {
   }
 
   getSuggestedQuotes(limit: number = 10): Observable<SuggestedQuote[]> {
+    return this._http.get<{ text: string, author: string }[]>(this.suggestedQuotesApiUrl).pipe(
+      map(quotes => {
+        if (0 === limit)
+          return quotes;
+
+        // Get only the limited requested amount starting from the array.
+        // @link https://bobbyhadz.com/blog/javascript-get-multiple-random-elements-from-array
+        const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+
+        return shuffled.slice(0, limit);
+      }),
+      map(quotes => {
+        return quotes.map(quote => {
+          // Since the api has the data formatted differently, we map each value correctly.
+          return {content: quote.text, author: quote.author ? quote.author : 'Anonymous'}
+        })
+      })
+    )
+  }
+
+  getSuggestedQuote(): Observable<SuggestedQuote> {
+    return this.getSuggestedQuotes().pipe(
+      map(suggestedQuotes => {
+        if (!suggestedQuotes.length)
+          return this.lemonQuote;
+
+        // Get a single random quote.
+        return suggestedQuotes[Math.floor(Math.random() * suggestedQuotes.length)];
+      })
+    )
+  }
+
+  // TODO: The two fire methods below for the suggested quotes must be implemented really carefully,
+  //  since it's pretty easy to cap the maximum free quote from Firebase.
+
+  getFireSuggestedQuotes(limit: number = 10): Observable<SuggestedQuote[]> {
     return this._fireStore.collection<SuggestedQuote>('suggestedQuotes', query => {
       // TODO: It would be nice to implement the randomness here during the query execution.
       //  @link https://stackoverflow.com/questions/46798981/firestore-how-to-get-random-documents-in-a-collection
@@ -160,16 +196,15 @@ export class QuoteService {
     }).valueChanges({idField: 'uid'}).pipe(take(1)); // In this way it will always complete after a single execution.
   }
 
-  getSuggestedQuote(): Observable<SuggestedQuote> {
-    // TODO: Not optimal, since we are executing the same request every time,
-    //  when we could instead add randomness into the "getSuggestedQuotes()" method.
-    return this.getSuggestedQuotes(-1).pipe(
+  getFireSuggestedQuote(): Observable<SuggestedQuote> {
+    return this.getSuggestedQuotes(1).pipe(
+      // TODO: Not optimal, since we are executing the same request every time,
+      //  when we could instead add randomness into the "getSuggestedQuotes()" method.
       map(suggestedQuotes => {
         if (!suggestedQuotes.length)
           return this.lemonQuote;
 
-        // Get a single random quote.
-        return suggestedQuotes[Math.floor(Math.random() * suggestedQuotes.length)];
+        return suggestedQuotes[0];
       })
     );
   }
