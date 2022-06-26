@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {delay, ReplaySubject, take} from "rxjs";
-import {Quote} from "../../models/quote";
+import {SuggestedQuote} from "../../models/quote";
 import {QuoteService} from "../../api/quote.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -42,7 +42,7 @@ export class DiscoverComponent implements OnInit {
   // TODO: In this component we don't rely directly on the value of the subject, but is this way ok?
   //  @link https://stackoverflow.com/questions/62262008/rxjs-behaviorsubject-proper-use-of-value
 
-  suggestedQuotes$: ReplaySubject<Omit<Quote, 'id'>[]> = new ReplaySubject<Omit<Quote, "id">[]>(1)
+  suggestedQuotes$: ReplaySubject<SuggestedQuote[]> = new ReplaySubject<SuggestedQuote[]>(1)
 
   constructor(
     private _quoteService: QuoteService,
@@ -60,13 +60,13 @@ export class DiscoverComponent implements OnInit {
     this.refreshQuotes();
   }
 
-  handleClickCopy(quote: Omit<Quote, 'id'>) {
+  handleClickCopy(quote: SuggestedQuote) {
     this._clipboard.copy(`${quote.content}\n( ${quote.author} )`)
 
     this._snackBar.open('Quote copied to the clipboard.', '📋');
   }
 
-  handleClickAdd(addQuote: Omit<Quote, 'id'>, addQuoteIndex: number) {
+  handleClickAdd(addQuote: SuggestedQuote, addQuoteIndex: number) {
     const dialogRef = this._dialog.open<DialogConfirmComponent, DialogConfirm>(DialogConfirmComponent, {
       data: {
         title: 'Add quote',
@@ -88,7 +88,7 @@ export class DiscoverComponent implements OnInit {
       })
   }
 
-  handleClickDiscard(discardQuote: Omit<Quote, "id">, discardQuoteIndex: number) {
+  handleClickDiscard(discardQuote: SuggestedQuote, discardQuoteIndex: number) {
     const dialogRef = this._dialog.open<DialogConfirmComponent, DialogConfirm>(DialogConfirmComponent, {
       data: {
         title: 'Discard quote',

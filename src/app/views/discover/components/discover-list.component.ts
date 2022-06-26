@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Quote} from "../../../models/quote";
+import {SuggestedQuote} from "../../../models/quote";
 
 @Component({
   selector: 'sf-discover-list',
@@ -39,13 +39,13 @@ import {Quote} from "../../../models/quote";
 })
 export class DiscoverListComponent implements OnInit {
 
-  @Input() quote!: Omit<Quote, 'id'>;
+  @Input() quote!: SuggestedQuote;
 
-  @Output() onClickCopy: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
+  @Output() onClickCopy: EventEmitter<SuggestedQuote> = new EventEmitter<SuggestedQuote>()
 
-  @Output() onClickAdd: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
+  @Output() onClickAdd: EventEmitter<SuggestedQuote> = new EventEmitter<SuggestedQuote>()
 
-  @Output() onClickDiscard: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>()
+  @Output() onClickDiscard: EventEmitter<SuggestedQuote> = new EventEmitter<SuggestedQuote>()
 
   constructor() {
   }

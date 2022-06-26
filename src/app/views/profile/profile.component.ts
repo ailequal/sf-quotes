@@ -17,7 +17,7 @@ import {AuthService} from "../../api/auth.service";
           <div class="mb-8">
             <h3 class="text-center">Welcome <b>{{user.displayName}}</b></h3>
             <h4 class="text-center">Last login: {{user.data?.lastLogin | date: 'short'}}</h4>
-            <img class="m-auto" [src]="user.photoURL" alt="Guest profile picture.">
+            <img class="m-auto" [src]="user.photoURL" alt="The user profile picture.">
           </div>
 
           <div class="flex justify-around items-center">
