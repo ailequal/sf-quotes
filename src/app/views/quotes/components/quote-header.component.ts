@@ -13,7 +13,7 @@ import {Observable} from "rxjs";
         <form
           [formGroup]="searchForm"
           novalidate
-          class="lg:w-2/5 mb-3 lg:mb-0"
+          class="w-4/5 lg:w-2/5 mx-auto mb-3 lg:mb-0"
           (keydown.enter)="$event.preventDefault()"
         >
           <div mat-dialog-content>
