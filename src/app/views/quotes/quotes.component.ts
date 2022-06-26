@@ -38,7 +38,9 @@ import {Guest, User} from "../../models/user";
           (onClickDelete)="handleClickDelete($event)"
         ></sf-quote-list>
 
-        <sf-quote-empty *ngIf="!(quotes$ | async)?.length"></sf-quote-empty>
+        <ng-container *ngIf="allQuotes$ | async as allQuotes;">
+          <sf-quote-empty *ngIf="!allQuotes.length"></sf-quote-empty>
+        </ng-container>
       </ng-container>
 
       <ng-template #loading>
@@ -51,11 +53,9 @@ import {Guest, User} from "../../models/user";
 })
 export class QuotesComponent implements OnInit, OnDestroy {
 
-  // TODO: The component "sf-quote-empty" is shown for a brief moment even when it's not supposed to.
-
   // TODO: Consider adding a quote item component (single view of a quote).
 
-  quotes$: Observable<Quote[]> | null = null;
+  allQuotes$: Observable<Quote[]> | null = null;
 
   search$: Observable<any> | null = null;
 
@@ -76,7 +76,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.quotes$ = this._quoteService.getQuotes();
+    this.allQuotes$ = this._quoteService.getQuotes();
 
     this.suggestQuote();
   }
@@ -89,7 +89,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(search => {
-        return this.quotes$!.pipe(
+        return this.allQuotes$!.pipe(
           map(quotes => {
             if ('string' !== typeof search || !search.length)
               return quotes;
