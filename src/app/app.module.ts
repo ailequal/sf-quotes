@@ -21,7 +21,7 @@ import {AppComponent} from './app.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     CoreModule,
     SharedModule
   ],

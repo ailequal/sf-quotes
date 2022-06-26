@@ -6,13 +6,12 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Quote, SuggestedQuote} from "../models/quote";
 import {map, Observable, of, switchMap, take, throwError} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuoteService {
-
-  suggestedQuotesApiUrl: string = 'https://type.fit/api/quotes';
 
   lemonQuote: SuggestedQuote = {
     uid: '0000000000000000000000000000',
@@ -122,7 +121,7 @@ export class QuoteService {
     // This return is a safety measure (disable it before executing the method).
     // return;
 
-    this._http.get<{ text: string, author: string }[]>(this.suggestedQuotesApiUrl).pipe(
+    this._http.get<{ text: string, author: string }[]>(environment.suggestedQuotesApiUrl).pipe(
       map(quotes => {
         if (-1 === limit)
           return quotes;
@@ -153,7 +152,7 @@ export class QuoteService {
   }
 
   getSuggestedQuotes(limit: number = 10): Observable<SuggestedQuote[]> {
-    return this._http.get<{ text: string, author: string }[]>(this.suggestedQuotesApiUrl).pipe(
+    return this._http.get<{ text: string, author: string }[]>(environment.suggestedQuotesApiUrl).pipe(
       map(quotes => {
         if (0 === limit)
           return quotes;
