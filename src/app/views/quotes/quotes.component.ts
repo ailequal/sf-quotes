@@ -4,7 +4,7 @@ import {
   debounceTime, delay,
   distinctUntilChanged,
   map,
-  Observable, of,
+  Observable,
   startWith, switchMap, take
 } from "rxjs";
 import {QuoteService} from "../../api/quote.service";
@@ -84,22 +84,19 @@ export class QuotesComponent implements OnInit, OnDestroy {
   handleOnSearch(search$: Observable<any>) {
     this.search$ = search$;
 
-    this.filteredQuotes$ = this.quotes$!.pipe(
-      switchMap(quotes => {
-        if (!this.search$)
-          return of(quotes);
-
-        return this.search$.pipe(
-          startWith(''),
-          debounceTime(300),
-          distinctUntilChanged(),
-          map(search => {
+    this.filteredQuotes$ = this.search$.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(search => {
+        return this.quotes$!.pipe(
+          map(quotes => {
             if ('string' !== typeof search || !search.length)
               return quotes;
 
             return quotesFilter(quotes, search);
           })
-        );
+        )
       })
     );
   }
