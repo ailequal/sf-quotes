@@ -31,7 +31,7 @@ export class QuoteFormDialogComponent implements OnInit {
     this._dialogRef.close($event);
   }
 
-  handleClickAddEdit($event: Omit<Quote, "id">) {
+  handleClickAddEdit($event: Omit<Quote, 'uid' | 'userUid' | 'timestamp'>) {
     this._dialogRef.close($event);
   }
 

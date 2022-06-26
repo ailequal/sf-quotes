@@ -20,13 +20,13 @@ import {Subject} from "rxjs";
 })
 export class QuoteSuggestedComponent implements OnInit {
 
-  quote: Omit<Quote, 'id'> = this.data.quote
+  quote: Omit<Quote, 'userUid'> = this.data.quote
 
-  onClickAdd$: Subject<Omit<Quote, 'id'>> = new Subject<Omit<Quote, "id">>();
+  onClickAdd$: Subject<Omit<Quote, 'userUid'>> = new Subject<Omit<Quote, "userUid">>();
 
   constructor(
     private _snackBarRef: MatSnackBarRef<QuoteSuggestedComponent>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: { quote: Omit<Quote, 'id'> }
+    @Inject(MAT_SNACK_BAR_DATA) public data: { quote: Omit<Quote, 'userUid'> }
   ) {
   }
 
@@ -37,7 +37,7 @@ export class QuoteSuggestedComponent implements OnInit {
     this._snackBarRef.dismiss();
   }
 
-  handleClickAdd(quote: Omit<Quote, "id">) {
+  handleClickAdd(quote: Omit<Quote, "userUid">) {
     this.onClickAdd$.next(quote);
     this._snackBarRef.dismiss();
   }

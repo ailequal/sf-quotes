@@ -65,7 +65,7 @@ export class QuoteFormComponent implements OnInit {
 
   @Output() onClickCancel: EventEmitter<false> = new EventEmitter<false>();
 
-  @Output() onClickAddEdit: EventEmitter<Omit<Quote, 'id'>> = new EventEmitter<Omit<Quote, 'id'>>();
+  @Output() onClickAddEdit: EventEmitter<Omit<Quote, 'uid' | 'userUid' | 'timestamp'>> = new EventEmitter<Omit<Quote, 'uid' | 'userUid' | 'timestamp'>>();
 
   quoteForm = this._fb.group({
     content: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
@@ -94,7 +94,7 @@ export class QuoteFormComponent implements OnInit {
   }
 
   handleSubmit($event: MouseEvent) {
-    let quote: Omit<Quote, 'id'> = {content: this.content!.value, author: this.author!.value}
+    let quote: Omit<Quote, 'uid' | 'userUid' | 'timestamp'> = {content: this.content!.value, author: this.author!.value}
 
     // If we don't have an author set, we will always set "Anonymous".
     if (!quote.author)
