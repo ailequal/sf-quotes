@@ -1,10 +1,15 @@
+import firebase from "firebase/compat/app";
+
 export interface Quote {
-  id: number;
+  uid: string;
+  userUid: string;
   content: string;
   author: string;
+  timestamp:  firebase.firestore.Timestamp
 }
 
 export interface SuggestedQuote {
-  text: string,
+  uid: string;
+  content: string,
   author: string
 }
