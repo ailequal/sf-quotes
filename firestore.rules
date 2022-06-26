@@ -17,7 +17,7 @@ service cloud.firestore {
     }
 
     match /suggestedQuotes/{quoteId} {
-        allow read;
+        allow read: if false;
     }
 
     function isOwner(userId) {
