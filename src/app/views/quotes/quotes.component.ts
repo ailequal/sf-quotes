@@ -172,6 +172,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
       if (suggestedQuoteCookie.length)
         return;
 
+      // TODO: If the user change route before the snackBar is actually displayed, we won't we able to dismiss it automatically.
       this._quoteService.getSuggestedQuote().pipe(delay(3000)).subscribe(quote => {
         this.quoteSuggestedSnackBarRef = this._snackBar.openFromComponent(QuoteSuggestedComponent, {
           duration: 0,

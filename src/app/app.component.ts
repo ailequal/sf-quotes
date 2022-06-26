@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NavigationLink} from "./models/link";
 import {MatDialog} from "@angular/material/dialog";
-import {Quote} from "./models/quote";
 import {HelpDialogComponent} from "./core/components/help-dialog.component";
 import {AuthService} from "./api/auth.service";
 import {MatDrawer} from "@angular/material/sidenav";
@@ -12,7 +11,7 @@ import {CopyrightComponent} from "./core/components/copyright.component";
 @Component({
   selector: 'sf-root',
   template: `
-    <mat-drawer-container class="h-screen" autosize>
+    <mat-drawer-container class="flex flex-col h-full justify-between" autosize>
 
       <mat-drawer #drawerRef class="w-[280px] p-8" mode="over">
         <sf-toolbar-list
@@ -80,7 +79,12 @@ export class AppComponent implements OnInit {
   }
 
   handleClickHelp($event: MouseEvent) {
-    this._dialog.open<HelpDialogComponent, { quote: Quote | null }>(HelpDialogComponent);
+    this._dialog.open<HelpDialogComponent>(HelpDialogComponent, {
+      maxWidth: '200px',
+      maxHeight: '200px',
+      width: '50%',
+      height: '50%'
+    });
   }
 
 }
