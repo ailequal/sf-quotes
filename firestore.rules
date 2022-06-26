@@ -10,10 +10,14 @@ service cloud.firestore {
     }
 
     match /quotes/{quoteId} {
-        allow read: if existingData().uid == incomingAuth().uid;
-        allow create: if incomingAuth().uid == incomingData().uid;
-        allow update: if incomingAuth().uid == incomingData().uid && existingData().uid == incomingAuth().uid;
-        allow delete: if existingData().uid == incomingAuth().uid;
+        allow read: if existingData().userUid == incomingAuth().uid;
+        allow create: if incomingAuth().uid == incomingData().userUid;
+        allow update: if incomingAuth().uid == incomingData().userUid && existingData().userUid == incomingAuth().uid;
+        allow delete: if existingData().userUid == incomingAuth().uid;
+    }
+
+    match /suggestedQuotes/{quoteId} {
+        allow read;
     }
 
     function isOwner(userId) {
