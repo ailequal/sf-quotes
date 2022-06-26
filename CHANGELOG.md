@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.4 - 2022-06-26
+
+* Fix - Fixed the showed quotes when edited with an active search filter.
+* Fix - The no quotes available component is only displayed when really needed.
+* Enhancement - Cleaned the environment files.
+
 ## 0.0.3 - 2022-06-26
 
 * Add - The quote service fully supports the Firebase apis along with the relative quote module.
