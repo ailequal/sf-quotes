@@ -1,10 +1,10 @@
 import firebase from "firebase/compat/app";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
-import {Injectable} from '@angular/core';
-import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
-import {Router} from "@angular/router";
 import {Guest, User} from "../models/user";
+import {Injectable} from '@angular/core';
+import {Router} from "@angular/router";
+import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
