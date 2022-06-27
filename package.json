@@ -9,7 +9,8 @@
     "deploy": "firebase deploy --only hosting",
     "build-deploy": "ng deploy",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "cypress:open": "cypress open"
   },
   "private": true,
   "dependencies": {
