@@ -11,7 +11,7 @@ import {delay, map, Observable, of, switchMap} from "rxjs";
 })
 export class AuthService {
 
-  // TODO: Implement OAuth 2.0!!
+  // TODO: Implement reCAPTCHA.
 
   user$!: Observable<User | Guest>;
 
