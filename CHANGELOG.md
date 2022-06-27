@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0 - 2022-06-27
+
+* Fix - The css is now fine even on the smaller screens.
+* Fix - The debug module route has been disabled (the files are still present in the project).
+
 ## 0.0.4 - 2022-06-26
 
 * Fix - Fixed the showed quotes when edited with an active search filter.
