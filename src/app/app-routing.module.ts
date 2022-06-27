@@ -45,11 +45,11 @@ const routes: Routes = [
     loadChildren: () => import('./views/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule),
     pathMatch: 'full'
   },
-  {
-    path: 'debug',
-    loadChildren: () => import('./views/debug/debug.module').then(m => m.DebugModule),
-    pathMatch: 'full'
-  },
+  // {
+  //   path: 'debug',
+  //   loadChildren: () => import('./views/debug/debug.module').then(m => m.DebugModule),
+  //   pathMatch: 'full'
+  // },
   {
     path: '**',
     redirectTo: 'page-not-found',
